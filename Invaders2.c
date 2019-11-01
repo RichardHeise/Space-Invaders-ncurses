@@ -76,8 +76,6 @@ void print_tela_final (t_tela *t_a, t_tela *t_c, t_tela *t_t, int lin, int col) 
                 mvprintw(i, j, "W");
             } else if (t_t->matrix[i][j] == 5) {
                 mvprintw(i, j, "|");
-            } else if (t_t->matrix[i][j] == 1) {
-                mvprintw(i, j, "X");
             } else {
                 mvprintw(i, j, " ");
             }
@@ -182,14 +180,19 @@ void atira (t_tela *t_t, t_shot *shot, int i, int j) {
 }
 
 void atualiza_tiro (t_tela *t_t, t_shot s[]) {
-    int i;
+    int i, k;
+    k = 0;
     for (i=0; i < MAX_TIROS; ++i) {
         if (s[i].vida) {
             t_t->matrix[s[i].posx][s[i].posy] = 0;
             s[i].posx = s[i].posx - 1;
             t_t->matrix[s[i].posx][s[i].posy] = 5;
+            k++;
         }
     }   
+    if (! k) {
+        zera_tela(t_t, LINHAS, COLUNAS);
+    }
 }
 
 int acha_alien (t_exercito *a, int i, int j) {
@@ -199,8 +202,8 @@ int acha_alien (t_exercito *a, int i, int j) {
             return k;
         }
     }
-
 }
+
 void verifica_tiro (t_tela *t_t, t_tela *t_a, t_exercito *a, t_shot shots[], int *max) {
     int i, index;
     for (i = 0; i < MAX_TIROS; ++i) {
@@ -209,7 +212,7 @@ void verifica_tiro (t_tela *t_t, t_tela *t_a, t_exercito *a, t_shot shots[], int
             remove_vetor_tiro(shots);
             *max = *max - 1;
         } else if (shots[i].vida && t_a->matrix[shots[i].posx][shots[i].posy]) {
-            t_t->matrix[shots[i].posx][shots[i].posy] = 7;
+            t_t->matrix[shots[i].posx][shots[i].posy] = 0;
             t_a->matrix[shots[i].posx][shots[i].posy] = 7;
             index = acha_alien(a, shots[i].posx, shots[i].posy);
             remove_vetor_alien(a, index);
