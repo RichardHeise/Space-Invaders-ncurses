@@ -2,43 +2,7 @@
 #include <stdio.h>
 #include <ncurses.h>
 #include <unistd.h>
-
-#define LINHAS 38
-#define COLUNAS 50
-#define MAX_TIROS 3
-#define MAX_ELEMENTOS 1000
-
-typedef struct s_shield {
-    int posx;
-    int posy;
-} t_shield;
-
-typedef struct s_armor {
-    t_shield barreira[MAX_ELEMENTOS];
-    int tam;
-} t_armadura;
-
-typedef struct s_unidade {
-    int posx;
-    int posy;
-} t_unidade;
-
-typedef struct s_exercito {
-    t_unidade aliens[1000];
-    int tam;
-} t_exercito;
-
-typedef struct s_shot {
-    int posx;
-    int posy;
-    int vida;
-} t_shot;
-
-typedef struct s_tela {
-    int **matrix;
-    int linhas;
-    int colunas;
-} t_tela;
+#include "Invaders_lib.h"
 
 void cria_tela (t_tela *t, int lin, int col) {
     int i;
@@ -73,7 +37,7 @@ void zera_tela (t_tela *t, int lin, int col) {
     }
 }
 
-void print_tela_final (t_tela *t_a, t_tela *t_c, t_tela *t_t, int lin, int col) {
+void print_tela_final (t_tela *t_a, t_tela *t_c, t_tela *t_t, t_tela *t_b, int lin, int col) {
     int i, j;
     for (i = 0; i < lin; ++i) {
         for (j = 0; j < col; ++j) {
@@ -89,6 +53,9 @@ void print_tela_final (t_tela *t_a, t_tela *t_c, t_tela *t_t, int lin, int col) 
                 mvprintw(i, j, "X");
             } else if (t_c->matrix[i][j] == 1) {
                 mvprintw(i, j, "W");
+            }
+            else if (t_b->matrix[i][j] == 8) {
+                mvprintw(i, j, "v");
             } else if (t_t->matrix[i][j] == 5) {
                 mvprintw(i, j, "|");
             } else {
@@ -222,6 +189,61 @@ void remove_vetor_alien (t_exercito *a, int i) {
     a->tam = a->tam - 1;
 }
 
+void solta_bombas (t_tela *t_b, t_arsenal *b, int k, t_unidade *alien) {
+    b->bombas[k].vida = 1;
+    b->bombas[k].posx = alien->posx+1;
+    b->bombas[k].posy = alien->posy;
+    t_b->matrix[b->bombas[k].posx][b->bombas[k].posy] = 8;
+}
+
+void cria_bombas (t_tela *t_b, t_arsenal *b, t_exercito *a) {
+    int i, k;
+    k = b->tam;
+    for (i = 0; i < a->tam; ++i) {
+        if (rand() % a->tam == 0) {
+            solta_bombas(t_b, b, k, &a->aliens[i]);
+            k += 1;
+        }
+    }
+    b->tam = k;
+}
+
+void atualiza_bomba (t_tela *t_b, t_bomba *bom) {
+    t_b->matrix[bom->posx][bom->posy] = 0;
+    bom->posx = bom->posx + 1;
+    t_b->matrix[bom->posx][bom->posy] = 8;   
+}
+
+void remove_vetor_bombas (t_arsenal *b, int i) {
+    int k;
+    for (k = i; k < b->tam - 1; k++) {
+        b->bombas[k] = b->bombas[k+1];
+    }
+    b->tam -= 1;
+}
+
+void verifica_bomba (t_tela *t_b, t_tela *t_a, t_exercito *a, t_arsenal *b, t_armadura *bar, int *max) {
+    int i, index;
+    for (i = 0; i < b->tam; ++i) {
+        if (b->bombas[i].posx+1 > (LINHAS - 2)) {
+            t_b->matrix[b->bombas[i].posx][b->bombas[i].posy] = 0;
+            b->bombas[i].vida = 0;
+            remove_vetor_bombas(b, i);
+            *max = *max - 1;
+        } else if (b->bombas[i].vida && t_a->matrix[b->bombas[i].posx][b->bombas[i].posy] == 2) {
+            t_a->matrix[b->bombas[i].posx][b->bombas[i].posy] = 3;
+            t_b->matrix[b->bombas[i].posx][b->bombas[i].posy] = 0;
+            index = acha_elemento(bar, b->bombas[i].posx, b->bombas[i].posy);
+            remove_vetor_barreira(bar, index);
+            b->bombas[i].vida = 0;
+            remove_vetor_bombas(b, i);
+            *max = *max - 1;
+        } else {
+            atualiza_bomba(t_b, &b->bombas[i]);
+        }
+    }
+}
+
 void remove_vetor_barreira (t_armadura *bar, int i) {
     int k;
     for (k = i; k < bar->tam; ++k) {
@@ -347,11 +369,16 @@ void atualiza_tela_canhao (t_tela *t_c, t_unidade *can, int input) {
     escreve_canhao_tela(t_c, can);
 }
 
-int canhao_vivo (t_exercito *a) {
+int canhao_vivo (t_exercito *a, t_arsenal *b, t_unidade *can) {
     int i;
     for (i = 0; i < a->tam; ++i) {
         if (a->aliens[i].posx == LINHAS - 2)
             return 0;
+    }
+    for ( i = 0; i < b->tam; ++i) {
+        if (b->bombas[i].posx == can->posx && b->bombas[i].posy == can->posy) {
+            return 0;
+        }
     }
     return 1;
 }
