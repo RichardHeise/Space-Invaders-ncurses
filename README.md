@@ -27,7 +27,7 @@ $ sudo dnf install ncurses-devel
 }
 
 1). Coloque todos os arquivos em uma só pasta
-2). Vá para a pesta supracitada.
+2). Vá para a pasta supracitada.
 3). Digite no terminal:
 
 $ gcc Invaders.c Invaders_lib.c -o main -lncurses -lm 
