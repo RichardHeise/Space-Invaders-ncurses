@@ -27,7 +27,7 @@ int main () {
     canhao.posx = LINHAS - 2;
     canhao.posy = COLUNAS / 2;
 
-    int contador, controle, velocidade;
+    int contador, controle, velocidade, score;
     char entr;
     int i, j, buff;
 
@@ -80,7 +80,7 @@ int main () {
             i++;
         }
         if (contador % 12 == 0) {
-            verifica_colisoes(&tela_tiro, &tela_aliens, &tela_geofront, &unidades, tiros, &barreira, &nave_mae, &buff, &i);
+            verifica_colisoes(&tela_tiro, &tela_aliens, &tela_geofront, &unidades, tiros, &barreira, &nave_mae, &buff, &i, &score);
             atualiza_tiro(&tela_tiro, tiros);
         }
         atualiza_tela_canhao(&tela_canhao, &canhao, entr);
@@ -94,7 +94,7 @@ int main () {
         }
     }
 
-    mensagem_final(unidades.tam);
+    mensagem_final(unidades.tam, &score);
 
     endwin();
     return 0;

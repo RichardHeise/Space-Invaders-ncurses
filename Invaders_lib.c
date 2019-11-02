@@ -364,7 +364,7 @@ int acha_elemento (t_armadura *bar, int i, int j) {
     }
 }
 
-void verifica_colisoes (t_tela *t_t, t_tela *t_a, t_tela *t_g, t_exercito *a, t_shot shots[], t_armadura *bar, t_ramiel *eva, int *bf, int *max) {
+void verifica_colisoes (t_tela *t_t, t_tela *t_a, t_tela *t_g, t_exercito *a, t_shot shots[], t_armadura *bar, t_ramiel *eva, int *bf, int *max, int *sc) {
     int i, index;
     for (i = 0; i < MAX_TIROS; ++i) {
         if (shots[i].posx-1 < 0) {
@@ -379,6 +379,7 @@ void verifica_colisoes (t_tela *t_t, t_tela *t_a, t_tela *t_g, t_exercito *a, t_
             shots[i].vida = 0;
             remove_vetor_tiro(shots);
             *max = *max - 1;
+            *sc += 10;
         } else if (shots[i].vida && t_a->matrix[shots[i].posx][shots[i].posy] == 2) {
             t_t->matrix[shots[i].posx][shots[i].posy] = 0;
             t_a->matrix[shots[i].posx][shots[i].posy] = 3;
@@ -393,6 +394,7 @@ void verifica_colisoes (t_tela *t_t, t_tela *t_a, t_tela *t_g, t_exercito *a, t_
             shots[i].vida = 0;
             remove_vetor_tiro(shots);
             *max = *max - 1;
+            *sc += 50;
         }
     }
 }
@@ -468,7 +470,7 @@ void mensagem_inicial () {
     refresh();
 }
 
-void mensagem_final (int perdeu) {
+void mensagem_final (int perdeu, int sc) {
     char input;
     clear();
     if (input != 'q') {
@@ -483,4 +485,5 @@ void mensagem_final (int perdeu) {
             usleep(5555555);
         }
     }
+    mvprintw(LINHAS, COLUNAS /2, "SCORE FINAL: %d", sc);
 }
