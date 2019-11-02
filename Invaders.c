@@ -50,6 +50,21 @@ int main () {
     bombas.tam = 0;
     i = 0;
     j = 0;
+    while (! entr) {
+        clear();
+        mvprintw(LINHAS /2 - 5, COLUNAS /2 - 5, "Bem-vindo ao Calouro Invaders!");
+        mvprintw(LINHAS /2 - 4, COLUNAS /2 - 4, "Aqui, você assumirá o papel da matéria de Alg2");
+        mvprintw(LINHAS /2 - 3, COLUNAS /2 - 3, "Atire suas notas e derrube todos os calouros e veteranos");
+        mvprintw(LINHAS /2 - 2, COLUNAS /2 - 2, "Que tentam desesperadamente alcançar a barreira!");
+        mvprintw(LINHAS /2 - 1, COLUNAS /2 - 1, "Cuidado! Eles também revidam com textões e postagens no spotted!");
+        mvprintw(LINHAS /2, COLUNAS /2, "A e D movem a nave. Espaço atira.");
+        mvprintw(LINHAS -3, COLUNAS -3, "Pressione qualquer tecla para continuar");
+        refresh();
+        entr = getchar();
+    }
+    clear();
+    refresh();
+
     while (entr != 'q' && canhao_vivo(&unidades, &bombas, &canhao) && unidades.tam != 0) {
         print_tela_final(&tela_aliens, &tela_canhao, &tela_tiro, &tela_bombas, LINHAS, COLUNAS);
         if (contador % (controle - velocidade) == 0) {
@@ -75,6 +90,20 @@ int main () {
         usleep(2500);
         contador -= 1;
     }
+    clear();
+    if (entr != 'q') {
+        if (! unidades.tam) {
+            mvprintw(LINHAS /2, COLUNAS /2, "Parabéns! Você conseguiu fazer com que todos os veteranos e calouros desse período pegassem DP!\n");
+            refresh();
+            usleep(9999999);
+        } else {
+            mvprintw(LINHAS /2 - 1, COLUNAS /2 - 1, "Você falhou em reprovar todos os alunos deste período!\n"); 
+            mvprintw(LINHAS /2, COLUNAS /2, "Parece que a dedicação deles valeu a pena no fim :)");
+            refresh();
+            usleep(9999999);
+        }
+    }
+
     endwin();
     return 0;
 }
