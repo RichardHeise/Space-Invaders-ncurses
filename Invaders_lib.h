@@ -103,7 +103,7 @@ int acha_alien (t_exercito *a, int i, int j);
 
 int acha_elemento (t_armadura *bar, int i, int j);
 
-void verifica_colisoes (t_tela *t_t, t_tela *t_a, t_tela *t_g, t_exercito *a, t_shot shots[], t_armadura *bar, t_ramiel *eva, int *bf, int *max);
+void verifica_colisoes (t_tela *t_t, t_tela *t_a, t_tela *t_g, t_exercito *a, t_shot shots[], t_armadura *bar, t_ramiel *eva, int *bf, int *max, int *sc);
 
 void escreve_canhao_tela (t_tela *t_c, t_unidade *can);
 
@@ -129,4 +129,4 @@ void verifica_bomba (t_tela *t_b, t_tela *t_a, t_exercito *a, t_arsenal *b, t_ar
 
 void mensagem_inicial();
 
-void mensagem_final(int perdeu);
+void mensagem_final(int perdeu, int sc);

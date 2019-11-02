@@ -476,14 +476,12 @@ void mensagem_final (int perdeu, int sc) {
     if (input != 'q') {
         if (! perdeu) {
             mvprintw(LINHAS /2, COLUNAS /2, "Parabéns! Você conseguiu fazer com que todos os veteranos e calouros desse período pegassem DP!\n");
-            refresh();
-            usleep(5555555);
         } else {
             mvprintw(LINHAS /2 - 1, COLUNAS /2 - 1, "Você falhou em reprovar todos os alunos deste período!\n"); 
             mvprintw(LINHAS /2, COLUNAS /2, "Parece que a dedicação deles valeu a pena no fim :)");
-            refresh();
-            usleep(5555555);
         }
     }
-    mvprintw(LINHAS, COLUNAS /2, "SCORE FINAL: %d", sc);
+    mvprintw(7, COLUNAS /2 + 18, "SCORE FINAL: %d", sc);
+    refresh();
+    usleep(5555888);
 }

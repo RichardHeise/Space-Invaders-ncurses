@@ -94,7 +94,7 @@ int main () {
         }
     }
 
-    mensagem_final(unidades.tam, &score);
+    mensagem_final(unidades.tam, score);
 
     endwin();
     return 0;
