@@ -2,6 +2,7 @@
 #define COLUNAS 50
 #define MAX_TIROS 3
 #define MAX_ELEMENTOS 1000
+#define TAM_MAE 4
 
 typedef struct s_shield {
     int posx;
@@ -22,6 +23,12 @@ typedef struct s_exercito {
     t_unidade aliens[MAX_ELEMENTOS];
     int tam;
 } t_exercito;
+
+typedef struct s_angel {
+    t_unidade corpo[TAM_MAE];
+    int tam;
+    int vida;
+} t_ramiel; 
 
 typedef struct s_shot {
     int posx;
@@ -50,7 +57,17 @@ void cria_tela (t_tela *t, int lin, int col);
 
 void zera_tela (t_tela *t, int lin, int col);
 
-void print_tela_final (t_tela *t_a, t_tela *t_c, t_tela *t_t, t_tela *t_b, int lin, int col);
+void print_tela_final (t_tela *t_a, t_tela *t_c, t_tela *t_t, t_tela *t_b, t_tela *t_g, int lin, int col);
+
+void escreve_nave_mae (t_tela *t_g, t_ramiel *eva);
+
+void spawna_nave_mae (t_tela *t_g, t_ramiel *eva);
+
+void mata_nave_mae (t_tela *t_g, t_ramiel *eva);
+
+int move_nave_mae (t_tela *t_g, t_ramiel *eva);
+
+void atualiza_nave_mae (t_tela *t_g, t_ramiel *eva);
 
 void cria_alien (t_unidade *alien, int r, int c);
 
@@ -86,7 +103,7 @@ int acha_alien (t_exercito *a, int i, int j);
 
 int acha_elemento (t_armadura *bar, int i, int j);
 
-void verifica_tiro (t_tela *t_t, t_tela *t_a, t_exercito *a, t_shot shots[], t_armadura *bar, int *max);
+void verifica_colisoes (t_tela *t_t, t_tela *t_a, t_tela *t_g, t_exercito *a, t_shot shots[], t_armadura *bar, t_ramiel *eva, int *bf, int *max);
 
 void escreve_canhao_tela (t_tela *t_c, t_unidade *can);
 
@@ -94,7 +111,7 @@ void move_nave (t_tela *t_c, t_unidade *can, int input);
 
 void verifica_posicao (t_tela *t_a, t_exercito *a, t_armadura *bar);
 
-void atualiza_tela_alien (t_tela *t_a, t_exercito *a, t_armadura *bar, int *vel);
+void atualiza_tela_alien (t_tela *t_a, t_exercito *a, t_armadura *bar, int *vel, int *bf);
 
 void atualiza_tela_canhao (t_tela *t_c, t_unidade *can, int input);
 
@@ -109,3 +126,7 @@ void atualiza_bomba (t_tela *t_b, t_bomba *bom);
 void remove_vetor_bombas (t_arsenal *b, int i);
 
 void verifica_bomba (t_tela *t_b, t_tela *t_a, t_exercito *a, t_arsenal *b, t_armadura *bar, int *max);
+
+void mensagem_inicial();
+
+void mensagem_final(int perdeu);

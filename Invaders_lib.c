@@ -37,7 +37,7 @@ void zera_tela (t_tela *t, int lin, int col) {
     }
 }
 
-void print_tela_final (t_tela *t_a, t_tela *t_c, t_tela *t_t, t_tela *t_b, int lin, int col) {
+void print_tela_final (t_tela *t_a, t_tela *t_c, t_tela *t_t, t_tela *t_b, t_tela *t_g, int lin, int col) {
     int i, j;
     for (i = 0; i < lin; ++i) {
         for (j = 0; j < col; ++j) {
@@ -45,6 +45,12 @@ void print_tela_final (t_tela *t_a, t_tela *t_c, t_tela *t_t, t_tela *t_b, int l
                 mvprintw(i, j, "#");
             } else if (t_a->matrix[i][j] == 1) {
                 mvprintw(i, j, "M");
+            } else if (t_g->matrix[i][j] == 4) {
+                mvprintw(i, j, "A");
+            } else if (t_g->matrix[i][j] == 3) {
+                mvprintw(i, j, "*");
+            } else if (t_g->matrix[i][j] == 9) {
+                mvprintw(i, j, "H");
             } else if (t_a->matrix[i][j] == 2) {
                 mvprintw(i, j, "=");
             } else if (t_a->matrix[i][j] == 3) {
@@ -74,7 +80,7 @@ void cria_alien (t_unidade *alien, int r, int c) {
 void cria_aliens (t_exercito *a) {
     int i, j;
     int k = 0;
-    for (i = 2; i <= 6; i += 2) {
+    for (i = 4; i <= 8; i += 2) {
         for (j = 6; j <= COLUNAS - 6; j += 2) {
             cria_alien(&(a->aliens[k]), i, j);
             k++;
@@ -119,6 +125,59 @@ void cria_barreira (t_tela *t_a, t_armadura *bar) {
         }
     }
     bar->tam = k;
+}
+
+void escreve_nave_mae (t_tela *t_g, t_ramiel *eva) {
+    int i, j;
+    for (i = 0; i < eva->tam / 2; ++i) {
+        t_g->matrix[eva->corpo[i].posx][eva->corpo[i].posy] = 4;
+    }
+    for (j = i; j < eva->tam / 2 + i; ++j) {
+        t_g->matrix[eva->corpo[j].posx][eva->corpo[j].posy] = 9;
+    }
+}
+
+void spawna_nave_mae (t_tela *t_g, t_ramiel *eva) {
+    int i, j, k;
+    k = 0;
+    eva->vida = 1;
+    for (i = 1; i < (TAM_MAE / 2) + 1; ++i) {
+        for (j = 1; j < (TAM_MAE / 2) + 1; ++j) {
+            eva->corpo[k].posx = i;
+            eva->corpo[k].posy = j;
+            k += 1;
+        }
+    }
+    eva->tam = k;
+    escreve_nave_mae(t_g, eva);
+}
+
+void mata_nave_mae (t_tela *t_g, t_ramiel *eva) {
+    int i;
+    for (i = eva->tam-1; i >= 0; --i) {
+        t_g->matrix[eva->corpo[i].posx][eva->corpo[i].posy] = 3;
+        eva->corpo[i].posy = 0;
+        eva->corpo[i].posy = 0;
+        eva->vida = 0;
+    }
+}
+
+int move_nave_mae (t_tela *t_g, t_ramiel *eva) {
+    int i;
+    for (i = eva->tam-1; i >= 0; --i) {
+        if (eva->corpo[i].posy+1 >= COLUNAS) {
+            mata_nave_mae(t_g, eva);
+            return 0;
+        }
+        eva->corpo[i].posy += 1;
+    }
+    return 1;
+}
+
+void atualiza_nave_mae (t_tela *t_g, t_ramiel *eva) {
+    zera_tela(t_g, LINHAS, COLUNAS);
+    eva->vida = move_nave_mae(t_g, eva);
+    escreve_nave_mae(t_g, eva);
 }
 
 void escreve_barreira_tela (t_tela *t_a, t_armadura *bar) {
@@ -305,7 +364,7 @@ int acha_elemento (t_armadura *bar, int i, int j) {
     }
 }
 
-void verifica_tiro (t_tela *t_t, t_tela *t_a, t_exercito *a, t_shot shots[], t_armadura *bar, int *max) {
+void verifica_colisoes (t_tela *t_t, t_tela *t_a, t_tela *t_g, t_exercito *a, t_shot shots[], t_armadura *bar, t_ramiel *eva, int *bf, int *max) {
     int i, index;
     for (i = 0; i < MAX_TIROS; ++i) {
         if (shots[i].posx-1 < 0) {
@@ -325,6 +384,12 @@ void verifica_tiro (t_tela *t_t, t_tela *t_a, t_exercito *a, t_shot shots[], t_a
             t_a->matrix[shots[i].posx][shots[i].posy] = 3;
             index = acha_elemento(bar, shots[i].posx, shots[i].posy);
             remove_vetor_barreira(bar, index);
+            shots[i].vida = 0;
+            remove_vetor_tiro(shots);
+            *max = *max - 1;
+        } else if (shots[i].vida && t_g->matrix[shots[i].posx][shots[i].posy]) {
+            *bf = 1000;
+            mata_nave_mae(t_g, eva);
             shots[i].vida = 0;
             remove_vetor_tiro(shots);
             *max = *max - 1;
@@ -356,9 +421,11 @@ void verifica_posicao (t_tela *t_a, t_exercito *a, t_armadura *bar) {
     }
 }
 
-void atualiza_tela_alien (t_tela *t_a, t_exercito *a, t_armadura *bar, int *vel) {
+void atualiza_tela_alien (t_tela *t_a, t_exercito *a, t_armadura *bar, int *vel, int *bf) {
     zera_tela(t_a, LINHAS, COLUNAS);
-    move_aliens(t_a, a, vel);
+    if (! *bf) {
+        move_aliens(t_a, a, vel);
+    }
     verifica_posicao(t_a, a, bar);
     escreve_aliens_tela(t_a, a);
 }
@@ -381,4 +448,39 @@ int canhao_vivo (t_exercito *a, t_arsenal *b, t_unidade *can) {
         }
     }
     return 1;
+}
+
+void mensagem_inicial () {
+    char input;
+    clear();
+    while (! input) {
+        mvprintw(LINHAS /2 - 5, COLUNAS /2 - 5, "Bem-vindo ao Calouro Invaders!");
+        mvprintw(LINHAS /2 - 4, COLUNAS /2 - 4, "Aqui, você assumirá o papel da matéria de Alg2");
+        mvprintw(LINHAS /2 - 3, COLUNAS /2 - 3, "Atire suas notas e derrube todos os calouros e veteranos");
+        mvprintw(LINHAS /2 - 2, COLUNAS /2 - 2, "Que tentam desesperadamente alcançar a barreira!");
+        mvprintw(LINHAS /2 - 1, COLUNAS /2 - 1, "Cuidado! Eles também revidam com textões e postagens no spotted!");
+        mvprintw(LINHAS /2, COLUNAS /2, "A e D movem a nave. Espaço atira.");
+        mvprintw(LINHAS -3, COLUNAS -3, "Pressione qualquer tecla para continuar");
+        refresh();
+        input = getchar();
+    }
+    clear();
+    refresh();
+}
+
+void mensagem_final (int perdeu) {
+    char input;
+    clear();
+    if (input != 'q') {
+        if (! perdeu) {
+            mvprintw(LINHAS /2, COLUNAS /2, "Parabéns! Você conseguiu fazer com que todos os veteranos e calouros desse período pegassem DP!\n");
+            refresh();
+            usleep(5555555);
+        } else {
+            mvprintw(LINHAS /2 - 1, COLUNAS /2 - 1, "Você falhou em reprovar todos os alunos deste período!\n"); 
+            mvprintw(LINHAS /2, COLUNAS /2, "Parece que a dedicação deles valeu a pena no fim :)");
+            refresh();
+            usleep(5555555);
+        }
+    }
 }
