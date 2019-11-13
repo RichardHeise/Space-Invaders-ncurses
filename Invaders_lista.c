@@ -51,7 +51,6 @@ void cria_alien (t_jogo *alien, int i, int j) {
     alien->posy = j;
     alien->tipo = ALIEN_VET;
 
-    alien->hitbox = malloc(sizeof(t_pos) * 9);
     alien->hitbox->tam = 9;
  
     atualiza_hitbox_unidade(alien);
@@ -222,13 +221,80 @@ void move_alien (t_lista *aliens) {
     }
 }
 
+void cria_bomba (t_jogo *bomba, t_jogo *alien) {
+    bomba->vida = 1;
+    bomba->posx = alien->posx + 3;
+    bomba->posy = alien->posy + 1;
+    bomba->tipo = BOMBA;
+}
+
+void bombardeia (t_lista *aliens, t_lista *bombas) {
+    int i;
+    t_jogo bomba;
+    inicializa_atual_inicio(aliens);
+    for (i = 0; i < aliens->tamanho; ++i) {
+        if (rand() % aliens->tamanho == 0) {
+            cria_bomba(&bomba, &aliens->atual->chave);
+            insere_fim_lista(bomba, bombas);
+        }
+        incrementa_atual(aliens);
+    }
+}
+
+void atualiza_bomba (t_lista *bombas) {
+    int i;
+    inicializa_atual_inicio(bombas);
+    for (i = 0; i < bombas->tamanho; ++i) {
+        bombas->atual->chave.posx += 1;
+        incrementa_atual(bombas);
+    }
+}
+
+void printa_bombas (t_lista *bombas) {
+    int i;
+    inicializa_atual_inicio(bombas);
+    for (i = 0; i < bombas->tamanho; ++i) {
+        mvprintw(bombas->atual->chave.posx, bombas->atual->chave.posy, "v");
+        incrementa_atual(bombas);
+    }   
+}
+
+void verifica_colisao_bombas (t_lista *bombas, t_lista *armadura, t_jogo *c) {
+    int i, j;
+    inicializa_atual_inicio(bombas);
+    t_jogo lixo;
+    for (i = 0; i < bombas->tamanho; ++i) {
+        inicializa_atual_inicio(armadura);
+        for (j = 0; j < armadura->tamanho; ++j) {
+            if (bombas->atual->chave.posx == armadura->atual->chave.posx && bombas->atual->chave.posy == armadura->atual->chave.posy) {
+                remove_item_atual(&lixo, bombas);
+                remove_item_atual(&lixo, armadura);
+            }
+            incrementa_atual(armadura);
+        }
+        incrementa_atual(bombas);
+    }
+}
+
+void verifica_colisao_borda_bombas (t_lista *bombas) {
+    int i;
+    t_jogo lixo;
+    inicializa_atual_inicio(bombas);
+    for (i = 0; i < bombas->tamanho; ++i) {
+        if (bombas->atual->chave.posx + 1 > 37) {
+            remove_item_atual(&lixo, bombas);
+        }
+        incrementa_atual(bombas);
+    }
+}
+
 void cria_canhao (t_jogo *c) {
     c->vida = 1;
     c->posx = 35;
     c->posy = 50;
     c->tipo = CANHAO;
 
-    c->hitbox = malloc (sizeof(t_jogo) * 9);
+    c->hitbox->tam = 9;
     
     atualiza_hitbox_unidade(c);
 }
@@ -263,7 +329,7 @@ void printa_tiro(t_lista *tiros) {
     }   
 }
 
-void printa_tela (t_lista *aliens, t_lista *armadura, t_lista *tiros, t_jogo *c) {
+void printa_tela (t_lista *aliens, t_lista *armadura, t_lista *tiros, t_jogo *c, t_lista *bombas) {
     int i, j;
     erase();
     for (i = 0; i < 38; ++i) {
@@ -282,6 +348,7 @@ void printa_tela (t_lista *aliens, t_lista *armadura, t_lista *tiros, t_jogo *c)
         incrementa_atual(aliens);
     }
     printa_tiro(tiros);
+    printa_bombas(bombas);
     printa_canhao_sprite(c);
     printa_armadura_sprite(armadura);
     refresh();
@@ -326,7 +393,7 @@ void verifica_colisao_barreira (t_lista *tiros, t_lista *barreira) {
     }
 }
 
-void verifica_colisao_borda (t_lista *tiros) {
+void verifica_colisao_borda_tiros (t_lista *tiros) {
     int i;
     t_jogo lixo;
     inicializa_atual_inicio(tiros);
@@ -337,9 +404,22 @@ void verifica_colisao_borda (t_lista *tiros) {
         incrementa_atual(tiros);
     }
 }
-int canhao_vivo (t_lista *aliens) {
-    int i;
+
+int canhao_vivo (t_lista *aliens, t_lista *bombas, t_jogo *c) {
+    int i, j, k;
+    t_jogo lixo;
     inicializa_atual_inicio(aliens);
+    inicializa_atual_inicio(bombas);
+    for (i = 0; i < bombas->tamanho; ++i) {
+        inicializa_atual_inicio(bombas);
+        for (k = 0; k < c->hitbox->tam; ++k) {
+            if (bombas->atual->chave.posx == c->hitbox[k].posx && bombas->atual->chave.posy == c->hitbox[k].posy) {
+                remove_item_atual(&lixo, bombas);
+                return 0;
+            }
+        }
+        incrementa_atual(bombas);
+    }
     for (i = 0; i < aliens->tamanho; ++i) {
         if (aliens->atual->chave.posx + 2 == 35) { 
             return 0;
@@ -355,33 +435,55 @@ int main () {
     noecho();               /* não mostra os caracteres digitados */
     nodelay(stdscr, TRUE);  /* faz com que getch não aguarde a digitação */
     keypad(stdscr, TRUE);   /* permite a leitura das setas */
-    curs_set(FALSE);     
+    curs_set(FALSE);
+
     t_lista lista_aliens;
     t_lista lista_bombas;
     t_lista lista_barreira;
     t_lista lista_tiros;
     t_jogo canhao;
+
     int controlador;
     int constante;
     char entr;
 
+    inicializa_lista(&lista_bombas);
     inicializa_lista(&lista_aliens);
     inicializa_lista(&lista_barreira);
     inicializa_lista(&lista_tiros);
+
     cria_armadura(&lista_barreira);
     cria_aliens(&lista_aliens);
     cria_canhao(&canhao);
+
     entr = getch();
 
-    constante = 140;
+    constante = 120;
     controlador = 8000;
+
     while (entr != 'q' && canhao.vida && !lista_vazia(&lista_aliens)) {
-        printa_tela(&lista_aliens, &lista_barreira, &lista_tiros, &canhao);
+
+        printa_tela(&lista_aliens, &lista_barreira, &lista_tiros, &canhao, &lista_bombas);
+        canhao.vida = canhao_vivo(&lista_aliens, &lista_bombas, &canhao);
+
+        if (lista_aliens.ini->chave.vel >= 120) {
+            lista_aliens.ini->chave.vel = 120;
+        }
         if (controlador % (constante - lista_aliens.ini->chave.vel) == 0) {
             verifica_posicao_barreira(&lista_aliens, &lista_barreira);
             move_alien(&lista_aliens);
-            canhao.vida = canhao_vivo(&lista_aliens);
         }
+
+        if (controlador % 280 == 0) {
+            bombardeia(&lista_aliens, &lista_bombas);
+        }
+
+        if (controlador % 60 == 0 && !lista_vazia(&lista_bombas)) {
+            verifica_colisao_borda_bombas(&lista_bombas);
+            verifica_colisao_bombas(&lista_bombas, &lista_barreira, &canhao);
+            atualiza_bomba(&lista_bombas);
+        }
+
         entr = getch();
         if (entr == ' ' && lista_tiros.tamanho < 3) {
             atira(&lista_tiros, &canhao);
@@ -389,9 +491,10 @@ int main () {
         if (controlador % 10 == 0 && !lista_vazia(&lista_tiros)) {
             verifica_colisao_alien(&lista_tiros, &lista_aliens);
             verifica_colisao_barreira(&lista_tiros, &lista_barreira);
-            verifica_colisao_borda(&lista_tiros);
+            verifica_colisao_borda_tiros(&lista_tiros);
             atualiza_tiros(&lista_tiros);
         }
+
         move_canhao(&canhao, entr);
         usleep(2500);
         controlador -= 1;
