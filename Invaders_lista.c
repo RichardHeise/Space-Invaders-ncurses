@@ -311,10 +311,10 @@ void printa_canhao_sprite (t_jogo *c) {
     mvprintw(c->hitbox[8].posx, c->hitbox[8].posy, "^");
 }
 
-void move_canhao (t_jogo *c, char input) {
-    if (input == 'a' && c->posy - 2 >= 0) {
+void move_canhao (t_jogo *c, int input) {
+    if (input == KEY_LEFT && c->posy - 2 >= 0) {
         c->posy -= 1;
-    } else if (input == 'd' && c->posy + 2 < 99) {
+    } else if (input == KEY_RIGHT && c->posy + 2 < 99) {
         c->posy += 1;
     }
     atualiza_hitbox_unidade(c);
@@ -499,7 +499,7 @@ int main () {
 
     int controlador;
     int constante;
-    char entr;
+    int entr;
 
     inicializa_lista(&lista_bombas);
     inicializa_lista(&lista_aliens);
