@@ -14,7 +14,7 @@ typedef struct jogo {
     int posy;
     int vel;
     int vida;
-    t_pos hitbox[9];
+    t_pos hitbox[15];
 } t_jogo;
 
 struct t_nodo {
