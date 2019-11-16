@@ -24,6 +24,9 @@ int main () {
     int controlador;
     int constante;
     int entr;
+    int buff;
+
+    buff = 0;
 
     inicializa_lista(&lista_bombas);
     inicializa_lista(&lista_aliens);
@@ -52,7 +55,7 @@ int main () {
             move_alien(&lista_aliens);
         }
 
-        if (controlador % 1873 == 0 && !nave_mae.vida) {
+        if (controlador % 1637 == 0 && !nave_mae.vida) {
             cria_nave_mae(&nave_mae);
         }
         
@@ -76,9 +79,9 @@ int main () {
         }
 
         if (controlador % 12 == 0 && !lista_vazia(&lista_tiros)) {
-            if (nave_mae.vida)
-                verifica_colisao_nave_mae(&lista_tiros, &nave_mae);
-            
+            if (nave_mae.vida) {
+                verifica_colisao_nave_mae(&lista_tiros, &nave_mae, &buff);
+            }
             verifica_colisao_alien(&lista_tiros, &lista_aliens);
             verifica_colisao_barreira(&lista_tiros, &lista_barreira);
             verifica_colisao_borda_tiros(&lista_tiros);
@@ -88,7 +91,11 @@ int main () {
         move_canhao(&canhao, entr);
         canhao.vida = canhao_vivo(&lista_aliens, &lista_bombas, &canhao);
         usleep(2500);
-        controlador -= 1;
+        if (! buff) { /* Verifica se o player acertou a nave mãe */
+            controlador -= 1;
+        } else {
+            buff -= 1;
+        }
     }
     endwin();
     return 0;

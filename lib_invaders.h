@@ -100,7 +100,7 @@ void atualiza_tiros (t_lista *tiros);
 /*
     Verifica se o tiro acertou a nave mae
 */
-void verifica_colisao_nave_mae (t_lista *tiros, t_jogo *ramiel);
+void verifica_colisao_nave_mae (t_lista *tiros, t_jogo *ramiel, int *bf);
 
 /*
     Verifica se o tiro acertou um alien 

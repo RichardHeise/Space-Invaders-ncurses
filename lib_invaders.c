@@ -415,7 +415,7 @@ void mata_nave_mae (t_jogo *ramiel) {
     atualiza_hitbox_nave_mae(ramiel);
 }
 
-void verifica_colisao_nave_mae (t_lista *tiros, t_jogo *ramiel) {
+void verifica_colisao_nave_mae (t_lista *tiros, t_jogo *ramiel, int *bf) {
     int i, k;
     t_jogo lixo;
     inicializa_atual_inicio(tiros);
@@ -423,6 +423,7 @@ void verifica_colisao_nave_mae (t_lista *tiros, t_jogo *ramiel) {
         for (k = 0; k < ramiel->hitbox->tam; ++k) {
             if (ramiel->hitbox[k].posx == tiros->atual->chave.posx && ramiel->hitbox[k].posy == tiros->atual->chave.posy) {
                 remove_item_atual(&lixo, tiros);
+                *bf = 500;
                 mata_nave_mae(ramiel);
                 break;
             }
