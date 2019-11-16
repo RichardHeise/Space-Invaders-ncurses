@@ -3,6 +3,8 @@
 #include <ncurses.h>
 #include "lib_invaders.h"
 
+
+
 void atualiza_hitbox_unidade (t_jogo *uni) {
     int l, c, k;
 
@@ -19,7 +21,7 @@ void atualiza_hitbox_unidade (t_jogo *uni) {
 void atira (t_lista *tiros, t_jogo *c) {
     t_jogo tiro;
     tiro.vida = 1;
-    tiro.posx = c->posx+1;
+    tiro.posx = c->posx-1;
     tiro.posy = c->posy+1;
     tiro.tipo = TIRO;
 
@@ -369,7 +371,7 @@ void printa_tela (t_lista *aliens, t_lista *armadura, t_lista *tiros, t_jogo *c,
     printa_armadura_sprite(armadura);
     printa_nave_mae(ramiel);
     
-    refresh();
+    // refresh();
 }
 
 void atualiza_hitbox_nave_mae (t_jogo *ramiel) {
@@ -502,4 +504,25 @@ int canhao_vivo (t_lista *aliens, t_lista *bombas, t_jogo *c) {
         incrementa_atual(aliens);
     }
     return 1;
+}
+
+/* Mensagem do início do jogo */
+void mensagem_inicial () {
+    char input;
+    clear();
+    while (! input) {
+        mvprintw(LINHAS /2 - 7, COLUNAS /2 - 7, "Bem-vindo ao Calouro Invaders!");
+        mvprintw(LINHAS /2 - 6, COLUNAS /2 - 6, "Aqui, você assumirá o papel da matéria de Alg2");
+        mvprintw(LINHAS /2 - 5, COLUNAS /2 - 5, "Atire suas notas e derrube todos os calouros e veteranos");
+        mvprintw(LINHAS /2 - 4, COLUNAS /2 - 4, "Que tentam desesperadamente alcançar a barreira!");
+        mvprintw(LINHAS /2 - 3, COLUNAS /2 - 3, "Cuidado! Eles também revidam com textões e postagens no spotted!");
+        mvprintw(LINHAS /2 - 2, COLUNAS /2 - 2, "Além disso, uma greve sempre sobrevoa nosso campus.");
+        mvprintw(LINHAS /2 - 1, COLUNAS /2 - 1, "Se acertá-la os alunos pararão por alguns instante e suas notas sairão mais rapido! :)");
+        mvprintw(LINHAS /2, COLUNAS /2, "A e D movem a nave. Espaço atira.");
+        mvprintw(LINHAS -3, COLUNAS -3, "Pressione qualquer tecla para continuar");
+        refresh();
+        input = getchar();
+    }
+    clear();
+    refresh();
 }

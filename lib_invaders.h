@@ -8,6 +8,8 @@
 #define TIRO 6
 #define BOMBA 7
 #define MAX_TIROS 3
+#define LINHAS 38
+#define COLUNAS 100
 
 /* Funcoes do aliens */
 
@@ -151,3 +153,5 @@ void bombardeia (t_lista *aliens, t_lista *bombas);
 void atualiza_bomba (t_lista *bombas);
 
 int canhao_vivo (t_lista *aliens, t_lista *bombas, t_jogo *c);
+
+void mensagem_inicial();;
