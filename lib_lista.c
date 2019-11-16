@@ -236,19 +236,4 @@ void esvazia_lista(t_lista *l) {
         remove_fim_lista(&item, l);
     }
 }
-/*
-void imprime_lista(t_lista *l) {
-    int i, item, tamanho;
-    tamanho_lista(&tamanho, l);
-    if (lista_vazia(l))
-        return;
-    inicializa_atual_inicio(l);
-    for (i = 0; i < tamanho; ++i) {
-        checa_item_atual(&item, l);
-        printf("%d ", item);
-        incrementa_atual(l);
-    }
 
-    printf("\n");
-}
-*/
