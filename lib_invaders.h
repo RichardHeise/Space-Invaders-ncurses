@@ -116,43 +116,111 @@ void verifica_colisao_barreira (t_lista *tiros, t_lista *barreira);
     Verifica se o tiro chegou a borda
 */
 void verifica_colisao_borda_tiros (t_lista *tiros);
-
-
-
-void printa_bombas (t_lista *bombas);
-
-void verifica_colisao_bombas (t_lista *bombas, t_lista *armadura, t_jogo *c);
-
-void verifica_colisao_borda_bombas (t_lista *bombas);
-
-void cria_canhao (t_jogo *c);
-
-void printa_canhao_sprite (t_jogo *c);
-
-void move_canhao (t_jogo *c, int input);
-
+/*
+    Escreve o tiro na tela
+*/
 void printa_tiro(t_lista *tiros);
 
-void printa_nave_mae (t_jogo *ramiel);
 
-void printa_tela (t_lista *aliens, t_lista *armadura, t_lista *tiros, t_jogo *c, t_lista *bombas, t_jogo *ramiel);
+/* Funcoes das bombas */
 
-void atualiza_hitbox_nave_mae (t_jogo *ramiel);
-
-void cria_nave_mae (t_jogo *ramiel);
-
-void move_nave_mae (t_jogo *ramiel);
-
-void mata_nave_mae (t_jogo *ramiel);
-
+/*
+    Cria uma bomba uma posicao abaixo do alien que a soltou
+*/
 void cria_bomba (t_jogo *bomba, t_jogo *alien);
 
+/*
+    Plural da funcao de cria_bomba()
+    Faz com que os aliens sorteados soltem bombas
+*/
 void bombardeia (t_lista *aliens, t_lista *bombas);
 
+/*
+    Verifica se a bomba acertou a barreira
+*/
+void verifica_colisao_bombas (t_lista *bombas, t_lista *armadura, t_jogo *c);
+
+/* 
+    Verifica se uma bomba acertou a borda
+*/
+void verifica_colisao_borda_bombas (t_lista *bombas);
+
+/*
+    Escreve a bomba na tela
+*/
+void printa_bombas (t_lista *bombas);
+
+/*
+    Move a bomba pela tela
+*/
 void atualiza_bomba (t_lista *bombas);
 
+
+/* Funcoes do canhao */
+
+/*
+    Cria um canhao a partir de uma posicao inicial pre-definida
+*/
+void cria_canhao (t_jogo *c);
+
+/*
+    Faz o canhao andar de acordo com a entrada(input)
+*/
+void move_canhao (t_jogo *c, int input);
+
+/*
+    Escreve o corpo do canhao na tela
+*/
+void printa_canhao_sprite (t_jogo *c);
+
+/* 
+    Verifica se o canhao esta vivo
+*/
 int canhao_vivo (t_lista *aliens, t_lista *bombas, t_jogo *c);
 
+
+/* Funcoes da nave mae */
+
+/*
+    Cria uma nave mae em uma posicao pre-definida
+*/
+void cria_nave_mae (t_jogo *ramiel);
+
+/*
+    Desloca a nave mae pela tela
+*/
+void move_nave_mae (t_jogo *ramiel);
+
+/*
+    Cria a hitbox da nave mae 
+    Usa a posicao inicial pre-definida em cria_nave_mae()
+*/
+void atualiza_hitbox_nave_mae (t_jogo *ramiel);
+
+/*
+    Deleta a nave mae da tela e faz a vida dela ser 0
+*/
+void mata_nave_mae (t_jogo *ramiel);
+
+/*
+    Escreve o corpo da nave mae na tela 
+*/
+void printa_nave_mae (t_jogo *ramiel);
+
+
+/* Funcoes complementares */
+
+/*
+    Limpa e escreve os elementos na tela
+*/
+void printa_tela (t_lista *aliens, t_lista *armadura, t_lista *tiros, t_jogo *c, t_lista *bombas, t_jogo *ramiel);
+
+/*
+    Escreve a mensagem inicial
+*/
 void mensagem_inicial();
 
+/*
+    Escreve o placar na tela
+*/
 void placar(int s);
