@@ -25,8 +25,9 @@ int main () {
     int constante;
     int entr;
     int buff;
-
+    int score;
     buff = 0;
+    score = 0;
 
     inicializa_lista(&lista_bombas);
     inicializa_lista(&lista_aliens);
@@ -45,7 +46,7 @@ int main () {
     while (entr != 'q' && canhao.vida && !lista_vazia(&lista_aliens)) {
 
         printa_tela(&lista_aliens, &lista_barreira, &lista_tiros, &canhao, &lista_bombas, &nave_mae);
-
+        placar(score);
         if (lista_aliens.ini->chave.vel >= 100) {
             lista_aliens.ini->chave.vel = 100;
         }
@@ -80,9 +81,9 @@ int main () {
 
         if (controlador % 12 == 0 && !lista_vazia(&lista_tiros)) {
             if (nave_mae.vida) {
-                verifica_colisao_nave_mae(&lista_tiros, &nave_mae, &buff);
+                verifica_colisao_nave_mae(&lista_tiros, &nave_mae, &buff, &score);
             }
-            verifica_colisao_alien(&lista_tiros, &lista_aliens);
+            verifica_colisao_alien(&lista_tiros, &lista_aliens, &score);
             verifica_colisao_barreira(&lista_tiros, &lista_barreira);
             verifica_colisao_borda_tiros(&lista_tiros);
             atualiza_tiros(&lista_tiros);

@@ -100,12 +100,12 @@ void atualiza_tiros (t_lista *tiros);
 /*
     Verifica se o tiro acertou a nave mae
 */
-void verifica_colisao_nave_mae (t_lista *tiros, t_jogo *ramiel, int *bf);
+void verifica_colisao_nave_mae (t_lista *tiros, t_jogo *ramiel, int *bf, int *s);
 
 /*
     Verifica se o tiro acertou um alien 
 */
-void verifica_colisao_alien (t_lista *tiros, t_lista *aliens);
+void verifica_colisao_alien (t_lista *tiros, t_lista *aliens,int *s);
 
 /*
     Verifica se o tiro acertou a barreira
@@ -147,11 +147,12 @@ void mata_nave_mae (t_jogo *ramiel);
 
 void cria_bomba (t_jogo *bomba, t_jogo *alien);
 
-
 void bombardeia (t_lista *aliens, t_lista *bombas);
 
 void atualiza_bomba (t_lista *bombas);
 
 int canhao_vivo (t_lista *aliens, t_lista *bombas, t_jogo *c);
 
-void mensagem_inicial();;
+void mensagem_inicial();
+
+void placar(int s);

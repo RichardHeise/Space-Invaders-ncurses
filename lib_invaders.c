@@ -415,7 +415,7 @@ void mata_nave_mae (t_jogo *ramiel) {
     atualiza_hitbox_nave_mae(ramiel);
 }
 
-void verifica_colisao_nave_mae (t_lista *tiros, t_jogo *ramiel, int *bf) {
+void verifica_colisao_nave_mae (t_lista *tiros, t_jogo *ramiel, int *bf, int *s) {
     int i, k;
     t_jogo lixo;
     inicializa_atual_inicio(tiros);
@@ -423,8 +423,9 @@ void verifica_colisao_nave_mae (t_lista *tiros, t_jogo *ramiel, int *bf) {
         for (k = 0; k < ramiel->hitbox->tam; ++k) {
             if (ramiel->hitbox[k].posx == tiros->atual->chave.posx && ramiel->hitbox[k].posy == tiros->atual->chave.posy) {
                 remove_item_atual(&lixo, tiros);
-                *bf = 500;
                 mata_nave_mae(ramiel);
+                *bf = 500;
+                *s += 50;
                 break;
             }
         }
@@ -432,7 +433,7 @@ void verifica_colisao_nave_mae (t_lista *tiros, t_jogo *ramiel, int *bf) {
     }
 }
 
-void verifica_colisao_alien (t_lista *tiros, t_lista *aliens) {
+void verifica_colisao_alien (t_lista *tiros, t_lista *aliens, int *s) {
     int i, j, k;
     t_jogo lixo;
     inicializa_atual_inicio(tiros);
@@ -443,6 +444,7 @@ void verifica_colisao_alien (t_lista *tiros, t_lista *aliens) {
                 if (tiros->atual->chave.posx == aliens->atual->chave.hitbox[k].posx && tiros->atual->chave.posy == aliens->atual->chave.hitbox[k].posy) {
                     remove_item_atual(&lixo, tiros);
                     remove_item_atual(&lixo, aliens);
+                    *s += 10;
                     break;            
                 }
             }
@@ -526,4 +528,8 @@ void mensagem_inicial () {
     }
     clear();
     refresh();
+}
+
+void placar(int s) {
+    mvprintw(0, 45, "Score: %d", s);
 }
