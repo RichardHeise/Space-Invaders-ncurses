@@ -52,6 +52,7 @@ int main () {
         }
 
         if (controlador % (constante - lista_aliens.ini->chave.vel) == 0) {
+            checa_vidas(&lista_aliens, &lista_barreira, &nave_mae);
             verifica_posicao_barreira(&lista_aliens, &lista_barreira);
             move_alien(&lista_aliens);
         }

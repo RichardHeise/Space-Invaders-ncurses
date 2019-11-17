@@ -31,7 +31,7 @@ void cria_aliens (t_lista *aliens);
 /*
     Escreve na tela o corpo de cada alien
 */
-void printa_alien_sprite (t_jogo *alien);
+void printa_alien (t_lista *aliens);
 
 /*
     Decide para que lado os aliens vao se mover
@@ -76,7 +76,7 @@ void cria_armadura (t_lista *armadura);
 /*
     Escreve na tela o corpo de cada barreira 
 */
-void printa_armadura_sprite (t_lista *barreira);
+void printa_armadura_sprite (t_lista *armadura);
 
 /*
     Verifica se um alien esta comendo a barreira
@@ -110,7 +110,7 @@ void verifica_colisao_alien (t_lista *tiros, t_lista *aliens,int *s);
 /*
     Verifica se o tiro acertou a barreira
 */
-void verifica_colisao_barreira (t_lista *tiros, t_lista *barreira);
+void verifica_colisao_barreira (t_lista *tiros, t_lista *armadura);
 
 /*
     Verifica se o tiro chegou a borda
@@ -224,3 +224,7 @@ void mensagem_inicial();
     Escreve o placar na tela
 */
 void placar(int s);
+
+void checa_vidas (t_lista *aliens, t_lista *armadura, t_jogo *ramiel);
+
+void printa_explosao(t_jogo *unidade);
