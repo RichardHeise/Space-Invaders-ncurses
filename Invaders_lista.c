@@ -41,17 +41,19 @@ int main () {
     constante = 120;
     controlador = 8000;
 
-    // mensagem_inicial();
+    /* mensagem_inicial(); */
 
     while (entr != 'q' && canhao.vida && !lista_vazia(&lista_aliens)) {
 
         printa_tela(&lista_aliens, &lista_barreira, &lista_tiros, &canhao, &lista_bombas, &nave_mae);
+
         placar(score);
+        
         if (lista_aliens.ini->chave.vel >= 100) {
             lista_aliens.ini->chave.vel = 100;
         }
 
-        if (controlador % (constante - lista_aliens.ini->chave.vel) == 0) {
+        if (controlador % (constante - lista_aliens.ini->chave.vel) == 0 && !buff) {
             checa_vidas(&lista_aliens, &lista_barreira, &nave_mae);
             verifica_posicao_barreira(&lista_aliens, &lista_barreira);
             move_alien(&lista_aliens);
@@ -61,7 +63,7 @@ int main () {
             cria_nave_mae(&nave_mae);
         }
         
-        if (controlador % 51 == 0 && nave_mae.vida) {
+        if (controlador % 51 == 0 && nave_mae.vida == 1) {
             move_nave_mae(&nave_mae);
         }
         

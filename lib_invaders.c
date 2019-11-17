@@ -3,8 +3,6 @@
 #include <ncurses.h>
 #include "lib_invaders.h"
 
-
-
 void atualiza_hitbox_unidade (t_jogo *uni) {
     int l, c, k;
 
@@ -151,7 +149,7 @@ void printa_alien (t_lista *aliens) {
 }
 
 void move_aliens_direita (t_lista *aliens) {
-    int i, j;
+    int j;
     inicializa_atual_inicio(aliens);
     for (j = 0; j < aliens->tamanho; ++j) {
         aliens->atual->chave.posy += 1;
@@ -161,7 +159,7 @@ void move_aliens_direita (t_lista *aliens) {
 }
 
 void move_aliens_esquerda (t_lista *aliens) {
-    int i, j;
+    int j;
     inicializa_atual_inicio(aliens);
     for (j = 0; j < aliens->tamanho; ++j) {
         aliens->atual->chave.posy -= 1;
@@ -171,7 +169,7 @@ void move_aliens_esquerda (t_lista *aliens) {
 }
 
 void move_aliens_baixo (t_lista *aliens) {
-    int i, j;
+    int j;
     inicializa_atual_inicio(aliens);
     for (j = 0; j < aliens->tamanho; ++j) {
         aliens->atual->chave.posx += 1;
@@ -199,7 +197,7 @@ void verifica_posicao_barreira (t_lista *aliens, t_lista *armadura) {
     }
 }
 
-int verifica_borda (t_lista *aliens) {
+int verifica_borda_alien (t_lista *aliens) {
     int i;
     inicializa_atual_inicio(aliens);
     for (i = 0; i < 5; ++i) {
@@ -446,7 +444,6 @@ void cria_nave_mae (t_jogo *ramiel) {
 }
 
 void move_nave_mae (t_jogo *ramiel) {
-    int i;
     if (ramiel->posy + 4 < 99) {
         ramiel->posy += 1;
     } else {
@@ -529,6 +526,7 @@ void verifica_colisao_barreira (t_lista *tiros, t_lista *armadura) {
         incrementa_atual(tiros);
     }
 }
+
 void verifica_colisao_borda_tiros (t_lista *tiros) {
     int i;
     t_jogo lixo;
@@ -542,7 +540,7 @@ void verifica_colisao_borda_tiros (t_lista *tiros) {
 }
 
 int canhao_vivo (t_lista *aliens, t_lista *bombas, t_jogo *c) {
-    int i, j, k;
+    int i, k;
     t_jogo lixo;
     t_jogo bomba;
     inicializa_atual_inicio(aliens);

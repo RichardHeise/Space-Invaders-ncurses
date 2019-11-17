@@ -57,7 +57,7 @@ void move_aliens_baixo (t_lista *aliens);
     Verifica se os aliens da primeira coluna 
     ou da ultima estao na borda da tela 
 */
-int verifica_borda (t_lista *aliens);
+int verifica_borda_alien (t_lista *aliens);
 
 /* Funcoes da barreira */
 
@@ -76,7 +76,7 @@ void cria_armadura (t_lista *armadura);
 /*
     Escreve na tela o corpo de cada barreira 
 */
-void printa_armadura_sprite (t_lista *armadura);
+void printa_armadura (t_lista *armadura);
 
 /*
     Verifica se um alien esta comendo a barreira
@@ -225,6 +225,17 @@ void mensagem_inicial();
 */
 void placar(int s);
 
+/*
+    Verifica se o estado dos itens eh vivo ou morrendo 
+*/
 void checa_vidas (t_lista *aliens, t_lista *armadura, t_jogo *ramiel);
 
+/*
+    Desenha as explosoes na tela
+*/
 void printa_explosao(t_jogo *unidade);
+
+/*
+    Cria a borda do jogo 
+*/
+void cria_borda();
