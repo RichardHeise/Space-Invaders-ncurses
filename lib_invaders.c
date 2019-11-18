@@ -56,6 +56,7 @@ void cria_aliens (t_lista *aliens) {
             insere_fim_lista(alien, aliens);
         }
     }
+    
 }
 
 void cria_barreira (t_jogo *barreira, int i, int j) {
@@ -218,7 +219,7 @@ int verifica_borda_alien (t_lista *aliens) {
 
 void move_alien (t_lista *aliens) {
     
-    if (verifica_borda(aliens)) {
+    if (verifica_borda_alien(aliens)) {
         move_aliens_baixo(aliens);
     }
 
@@ -577,7 +578,7 @@ void mensagem_inicial () {
         mvprintw(LINHAS /2 - 3, COLUNAS /2 - 3, "Cuidado! Eles também revidam com textões e postagens no spotted!");
         mvprintw(LINHAS /2 - 2, COLUNAS /2 - 2, "Além disso, uma greve sempre sobrevoa nosso campus.");
         mvprintw(LINHAS /2 - 1, COLUNAS /2 - 1, "Se acertá-la os alunos pararão por alguns instante e suas notas sairão mais rapido! :)");
-        mvprintw(LINHAS /2, COLUNAS /2, "A e D movem a nave. Espaço atira.");
+        mvprintw(LINHAS /2, COLUNAS /2, "SETAS movem a nave. Espaço atira.");
         mvprintw(LINHAS -3, COLUNAS -3, "Pressione qualquer tecla para continuar");
         refresh();
         input = getchar();

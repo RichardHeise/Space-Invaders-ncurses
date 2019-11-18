@@ -1,5 +1,14 @@
 #include "lib_lista.h"
 
+/*
+    Tamanho da tela
+*/
+#define LINHAS 38
+#define COLUNAS 100
+
+/* 
+    TIPOS
+*/
 #define ALIEN_VET 1
 #define ALIEN_CAL 2
 #define NAVE_MAE 3
@@ -7,9 +16,45 @@
 #define CANHAO 5
 #define TIRO 6
 #define BOMBA 7
-#define MAX_TIROS 3
-#define LINHAS 38
-#define COLUNAS 100
+
+#define MAX_TIROS 3 /* Quantidade de tiros permitidos na tela */
+
+/*  Esses valores sao responsaveis pela velocidade dos aliens
+    aumente-os para DIMINUIR a velocidade de descida
+*/
+#define CONSTANTE_TEMPO 120 
+#define CONTROLADOR 8000 
+
+/*
+    Esse valor eh responsavel pela taxa de nascimento da nave mae
+    aumente para DIMINUIR a taxa
+*/
+#define CONSTANTE_SPAWN 1657 /* eh ideal que o valor seja primo devido a propriedades especificas */
+
+/*
+    Esse valor eh resposavel pela velocidade da nave mae
+    aumente para DIMINUIR a velocidade
+*/
+#define CONSTANTE_MOV 51 /* eh ideal que o valor seja impar devido a propriedades especificas */
+
+/*
+    Esse valor eh responsavel pela velocidade das bombas
+    aumente para DIMINUIR a velocidade
+*/
+#define CONSTANTE_QUEDA_MOV 67 
+
+/*
+    Esse valor eh responsavel pela taxa de bombas
+    aumente para DIMINUIR a taxa
+*/
+#define CONSTANTE_QUEDA 315 /* eh ideal que o valor seja multiplo de 5 */
+
+/* 
+    Esse valor eh responsavel pela velocidade dos tiros
+    aumente para DIMINUR a velocidade
+*/
+#define VEL_TIROS 12 /* eh ideal que o valor seja par e multiplo de 12 */
+
 
 /* Funcoes do aliens */
 
