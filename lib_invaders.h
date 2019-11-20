@@ -7,6 +7,21 @@
 #define COLUNAS 100
 
 /* 
+    Define as posicoes iniciais e finais dos aliens 
+*/
+#define INI_LIN_ALIEN 6
+#define FIM_LIN_ALIEN 26
+#define INI_COL_ALIEN 8
+#define FIM_COL_ALIEN 86
+
+/*
+    Define as posicoes iniciais e finais da barreira
+*/
+#define INI_LIN_BAR 30
+#define FIM_LIN_BAR 33
+#define INI_COL_BAR 2
+#define FIM_COL_BAR 8
+/* 
     TIPOS
 */
 #define ALIEN_VET 1
@@ -284,3 +299,8 @@ void printa_explosao(t_jogo *unidade);
     Cria a borda do jogo 
 */
 void cria_borda();
+
+/*
+    Escreve a mensagem final do jogo 
+*/
+void mensagem_final(int ganhou, int sc);
