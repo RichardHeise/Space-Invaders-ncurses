@@ -431,13 +431,12 @@ void checa_vidas (t_lista *aliens, t_lista *armadura, t_jogo *ramiel) {
     }
 
     if (ramiel->vida == 9) {
-        mata_nave_mae(ramiel); 
+        mata_nave_mae(ramiel);
     }
 }
 
 void atualiza_hitbox_nave_mae (t_jogo *ramiel) {
     int i, j, k;
-
     k = 0;
     for (i = 0; i < 3; ++i) {
         for (j = 0; j < 5; ++j) {
@@ -458,12 +457,23 @@ void cria_nave_mae (t_jogo *ramiel) {
     atualiza_hitbox_nave_mae(ramiel);
 }
 
-void move_nave_mae (t_jogo *ramiel) {
-    if (ramiel->posy + 4 < COLUNAS - 1) {
-        ramiel->posy += 1;
-    } else {
-        mata_nave_mae(ramiel);
+void verifica_borda_nave_mae (t_jogo *ramiel) {
+    int i;
+    for (i = 0; i < ramiel->hitbox->tam; ++i) {
+        if (ramiel->hitbox[i].posy + 1 >= COLUNAS) {
+            ramiel->hitbox[i].posy = -10;
+            ramiel->hitbox[i].posx = -10;
+        }
     }
+}
+
+void move_nave_mae (t_jogo *ramiel) {
+    if (ramiel->posy < COLUNAS) {
+        ramiel->posy += 1;
+    }
+    
+    verifica_borda_nave_mae(ramiel);
+    
     atualiza_hitbox_nave_mae(ramiel);
 }
 

@@ -252,6 +252,12 @@ void cria_nave_mae (t_jogo *ramiel);
 void move_nave_mae (t_jogo *ramiel);
 
 /*
+    Verifica se a nave mae esta na borda
+    Deleta aos poucos a hitbox
+*/
+void verifica_borda_nave_mae (t_jogo *ramiel);
+
+/*
     Cria a hitbox da nave mae 
     Usa a posicao inicial pre-definida em cria_nave_mae()
 */
