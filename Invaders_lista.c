@@ -67,6 +67,7 @@ int main () {
     while (canhao.vida && periodos <= 4) {
 
         esvazia_lista(&lista_bombas);
+        esvazia_lista(&lista_tiros);
         cria_aliens(&lista_aliens);
         periodos++;
 

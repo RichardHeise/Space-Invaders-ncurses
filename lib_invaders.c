@@ -314,7 +314,7 @@ void cria_canhao (t_jogo *c) {
 void printa_canhao_sprite (t_jogo *c) {
     mvprintw(c->posx, c->posy, "/I\\"); 
     mvprintw(c->posx+1, c->posy, "Q@Q ");
-    mvprintw(c->posx+2, c->posy, "^v^"); 
+    mvprintw(c->posx+2, c->posy, "\\^/");
 }
 
 void move_canhao (t_jogo *c, int input) {
@@ -337,14 +337,24 @@ void printa_tiro(t_lista *tiros) {
 
 void printa_nave_mae (t_jogo *ramiel) {
     int x, y, i;
+
+    char *sprite;
+
+    sprite="W(U^=uW~_^=uW)U";
     
     i = 0;
     if (ramiel->vida == 9) {
         printa_explosao(ramiel);
     } else {
-        mvprintw(ramiel->posx, ramiel->posy, "W^W^W");
-        mvprintw(ramiel->posx+1, ramiel->posy, "~=~=~");
-        mvprintw(ramiel->posx+2, ramiel->posy, "Uu.uU");
+        while (i < ramiel->hitbox->tam) {
+            x = ramiel->hitbox[i].posx;
+            y = ramiel->hitbox[i].posy;
+            if (x >= 0 && x <= 38 && y >= 0 && y <= 99) {
+                move(x, y);
+                addch(sprite[i]);
+            }
+            i += 1;
+        }
     }
 }
 
@@ -381,7 +391,9 @@ void printa_tela (t_lista *aliens, t_lista *armadura, t_lista *tiros, t_jogo *c,
     printa_bombas(bombas);
     printa_canhao_sprite(c);
     printa_armadura(armadura);
-    printa_nave_mae(ramiel);
+    if (ramiel->vida) {
+        printa_nave_mae(ramiel);
+    }
 }
 
 void checa_vidas (t_lista *aliens, t_lista *armadura, t_jogo *ramiel) {
