@@ -179,12 +179,22 @@ void move_aliens_baixo (t_lista *aliens) {
 void verifica_posicao_barreira (t_lista *aliens, t_lista *armadura) {
     int i, j, k;
     t_jogo lixo;
+
+    /** variaveis de facilitacao de leitura */
+    t_jogo alien;
+    t_jogo elemento;
+
     inicializa_atual_inicio(aliens);
+
     for (i = 0; i < aliens->tamanho; ++i) {
+        alien = aliens->atual->chave;
         inicializa_atual_inicio(armadura);
+
         for (j = 0; j < armadura->tamanho; ++j) {
+            elemento = armadura->atual->chave; 
+
             for (k = 0; k < aliens->atual->chave.hitbox->tam; ++k) {
-                if (armadura->atual->chave.posx == aliens->atual->chave.hitbox[k].posx && armadura->atual->chave.posy == aliens->atual->chave.hitbox[k].posy) {
+                if (elemento.posx == alien.hitbox[k].posx && elemento.posy == alien.hitbox[k].posy) {
                     remove_item_atual(&lixo, armadura);    
                 }
             }
@@ -267,14 +277,25 @@ void printa_bombas (t_lista *bombas) {
 
 void verifica_colisao_bombas (t_lista *bombas, t_lista *armadura, t_jogo *c) {
     int i, j;
-    inicializa_atual_inicio(bombas);
     t_jogo lixo;
+
+    /** variaveis de facilitacao de leitura */
+    t_jogo bomba;
+    t_jogo elemento;
+
+    inicializa_atual_inicio(bombas);
+
     for (i = 0; i < bombas->tamanho; ++i) {
         inicializa_atual_inicio(armadura);
+        bomba = bombas->atual->chave;
+
         for (j = 0; j < armadura->tamanho; ++j) {
-            if (bombas->atual->chave.posx == armadura->atual->chave.posx && bombas->atual->chave.posy == armadura->atual->chave.posy) {
+            elemento = armadura->atual->chave;
+
+            if (bomba.posx == elemento.posx && bomba.posy == elemento.posy) {
                 remove_item_atual(&lixo, bombas);
                 armadura->atual->chave.vida = 9;
+
             }
             incrementa_atual(armadura);
         }
@@ -343,6 +364,7 @@ void printa_nave_mae (t_jogo *ramiel) {
         while (i < ramiel->hitbox->tam) {
             x = ramiel->hitbox[i].posx;
             y = ramiel->hitbox[i].posy;
+            
             if (x >= 0 && x <= 38 && y >= 0 && y <= 99) {
                 move(x, y);
                 addch(sprite[i]);
@@ -457,12 +479,21 @@ void mata_nave_mae (t_jogo *ramiel) {
 void verifica_colisao_nave_mae (t_lista *tiros, t_jogo *ramiel, int *bf, int *s) {
     int i, k;
     t_jogo lixo;
+
+    /** variaveis de facilitacao de leitura */
     t_jogo tiro;
+    int pos_mae_x;
+    int pos_mae_y;
+
     inicializa_atual_inicio(tiros);
     for (i = 0; i < tiros->tamanho; ++i) {
         tiro = tiros->atual->chave;
         for (k = 0; k < ramiel->hitbox->tam; ++k) {
-            if (ramiel->hitbox[k].posx == tiro.posx && ramiel->hitbox[k].posy == tiro.posy && ramiel->vida == 1) {
+            pos_mae_x = ramiel->hitbox[k].posx;
+            pos_mae_y = ramiel->hitbox[k].posy;
+
+            if (pos_mae_x == tiro.posx && pos_mae_y == tiro.posy && ramiel->vida == 1) {
+
                 remove_item_atual(&lixo, tiros);
                 ramiel->vida = 9;
                 *bf = 750;
@@ -477,16 +508,23 @@ void verifica_colisao_nave_mae (t_lista *tiros, t_jogo *ramiel, int *bf, int *s)
 void verifica_colisao_alien (t_lista *tiros, t_lista *aliens, int *s) {
     int i, j, k;
     t_jogo lixo;
+
+    /** variaveis de facilitacao de leitura */
     t_jogo alien;
     t_jogo tiro;
+
     inicializa_atual_inicio(tiros);
+
     for (i = 0; i < tiros->tamanho; ++i) {
         inicializa_atual_inicio(aliens);
         tiro = tiros->atual->chave;
+
         for (j = 0; j < aliens->tamanho; ++j) {
             alien = aliens->atual->chave;
+
             for (k = 0; k < alien.hitbox->tam; ++k) {
                 if (tiro.posx == alien.hitbox[k].posx && tiro.posy == alien.hitbox[k].posy && alien.vida == 1) {
+
                     remove_item_atual(&lixo, tiros);
                     aliens->atual->chave.vida = 9;
                     *s += 10;
@@ -502,15 +540,21 @@ void verifica_colisao_alien (t_lista *tiros, t_lista *aliens, int *s) {
 void verifica_colisao_barreira (t_lista *tiros, t_lista *armadura) {
     int i, j;
     t_jogo lixo;
+
+    /** variaveis de facilitacao de leitura */
     t_jogo tiro;
     t_jogo barreira;
+
     inicializa_atual_inicio(tiros);
     for (i = 0; i < tiros->tamanho; ++i) {
         tiro = tiros->atual->chave;
         inicializa_atual_inicio(armadura);
+
         for (j = 0; j < armadura->tamanho; ++j) {
             barreira = armadura->atual->chave;
+
             if (tiro.posx == barreira.posx && tiro.posy == barreira.posy && barreira.vida == 1) {
+
                 remove_item_atual(&lixo, tiros);
                 armadura->atual->chave.vida = 9;
                 break;
@@ -536,14 +580,20 @@ void verifica_colisao_borda_tiros (t_lista *tiros) {
 int canhao_vivo (t_lista *aliens, t_lista *bombas, t_jogo *c) {
     int i, k;
     t_jogo lixo;
+
+    /** variaveis de facilitacao de leitura */
     t_jogo bomba;
     inicializa_atual_inicio(aliens);
     inicializa_atual_inicio(bombas);
+
     for (i = 0; i < bombas->tamanho; ++i) {
         inicializa_atual_inicio(bombas);
         bomba = bombas->atual->chave;
+
         for (k = 0; k < c->hitbox->tam; ++k) {
+
             if (bomba.posx == c->hitbox[k].posx && bomba.posy == c->hitbox[k].posy) {
+
                 remove_item_atual(&lixo, bombas);
                 return 0;
             }
@@ -599,7 +649,7 @@ void placar(int s) {
 void game_over (int sc, int per) {
     clear();
     mvprintw(5, COLUNAS /2 - 20, "GAME OVER");
-    if (per == 5) {
+    if (per == 4) {
         mvprintw(LINHAS /2 - 2, COLUNAS /2, "Você sobreviveu ao máximo de períodos possíveis, ninguém mais aguenta pegar DP!: %d!", per);
     } else {
         mvprintw(LINHAS /2, COLUNAS /2, "Você sobreviveu a: %d períodos!", per);

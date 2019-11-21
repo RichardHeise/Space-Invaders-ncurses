@@ -57,18 +57,18 @@ int main () {
     inicializa_lista(&lista_bombas);
 
     /* Criacao dos elementos estaticos */
-    cria_canhao(&canhao);
     cria_armadura(&lista_barreira);
 
     /* Inicialização da variavel controlador */
     controlador = CONTROLADOR;
 
 
-    while (canhao.vida && periodos <= 4) {
+    while (canhao.vida && periodos < 4) {
 
         esvazia_lista(&lista_bombas);
         esvazia_lista(&lista_tiros);
         cria_aliens(&lista_aliens);
+        cria_canhao(&canhao);
         periodos++;
 
         while (canhao.vida && !lista_vazia(&lista_aliens)) {
