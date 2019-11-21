@@ -119,15 +119,9 @@ void cria_armadura (t_lista *armadura) {
 }
 
 void printa_explosao (t_jogo *unidade) {
-    mvprintw(unidade->hitbox[0].posx, unidade->hitbox[0].posy, "\\");
-    mvprintw(unidade->hitbox[1].posx, unidade->hitbox[1].posy, "|");
-    mvprintw(unidade->hitbox[2].posx, unidade->hitbox[2].posy, "/");
-    mvprintw(unidade->hitbox[3].posx, unidade->hitbox[3].posy, "-");
-    mvprintw(unidade->hitbox[4].posx, unidade->hitbox[4].posy, "*");
-    mvprintw(unidade->hitbox[5].posx, unidade->hitbox[5].posy, "-");
-    mvprintw(unidade->hitbox[6].posx, unidade->hitbox[6].posy, "*");
-    mvprintw(unidade->hitbox[7].posx, unidade->hitbox[7].posy, "|");
-    mvprintw(unidade->hitbox[8].posx, unidade->hitbox[8].posy, "\\");
+    mvprintw(unidade->posx, unidade->posy,   "\\|*");
+    mvprintw(unidade->posx+1, unidade->posy, "- -");
+    mvprintw(unidade->posx+2, unidade->posy, "*|'");
 }
 
 void printa_alien (t_lista *aliens) {
@@ -139,11 +133,11 @@ void printa_alien (t_lista *aliens) {
         if (alien.vida == 9) {
             printa_explosao(&alien);
         } else if (alien.tipo == ALIEN_VET) {
-            mvprintw(alien.posx, alien.posy, "@T@");
+            mvprintw(alien.posx, alien.posy,   "@T@");
             mvprintw(alien.posx+1, alien.posy, "VET");
             mvprintw(alien.posx+2, alien.posy, ">O<");
         } else if (alien.tipo == ALIEN_CAL) {
-            mvprintw(alien.posx, alien.posy, "^+^");
+            mvprintw(alien.posx, alien.posy,   "^+^");
             mvprintw(alien.posx+1, alien.posy, "CAL");
             mvprintw(alien.posx+2, alien.posy, "\\^/");
         }
@@ -312,7 +306,7 @@ void cria_canhao (t_jogo *c) {
 }
 
 void printa_canhao_sprite (t_jogo *c) {
-    mvprintw(c->posx, c->posy, "/I\\"); 
+    mvprintw(c->posx, c->posy,   "/I\\"); 
     mvprintw(c->posx+1, c->posy, "Q@Q ");
     mvprintw(c->posx+2, c->posy, "\\^/");
 }
@@ -340,7 +334,7 @@ void printa_nave_mae (t_jogo *ramiel) {
 
     char *sprite;
 
-    sprite="W(U^=uW~_^=uW)U";
+    sprite=SPRITE_NAVE_MAE;
     
     i = 0;
     if (ramiel->vida == 9) {

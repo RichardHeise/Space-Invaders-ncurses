@@ -1,5 +1,6 @@
 #include "lib_lista.h"
 
+#define SPRITE_NAVE_MAE "W(U^=uW~_^=uW)U"
 /*
     Tamanho da tela
 */
