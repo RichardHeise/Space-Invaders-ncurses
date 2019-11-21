@@ -1,6 +1,12 @@
 #include "lib_lista.h"
 
 #define SPRITE_NAVE_MAE "W(U^=uW~_^=uW)U"
+#define SPRITE_CANHAO "/I\\Q@Q\\^/"
+#define SPRITE_ALIEN_VET "@T@VET>O<"
+#define SPRITE_ALIEN_CAL "^+^CAL\\^/"
+#define SPRITE_EXPLOSAO "\\|- -*|'"
+
+
 /*
     Tamanho da tela
 */
@@ -316,3 +322,5 @@ void mensagem_final(int ganhou, int sc);
     Escreve a mensagem de fim de jogo
 */
 void game_over (int sc, int per);
+
+void printa_unidade (t_jogo *unidade);

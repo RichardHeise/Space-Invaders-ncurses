@@ -126,20 +126,18 @@ void printa_explosao (t_jogo *unidade) {
 
 void printa_alien (t_lista *aliens) {
     int i, x, y;
+    /** Facilita a leitura */
+
     t_jogo alien;
     inicializa_atual_inicio(aliens);
+
     for (i = 0; i < aliens->tamanho; ++i) {
+
         alien = aliens->atual->chave;
         if (alien.vida == 9) {
             printa_explosao(&alien);
-        } else if (alien.tipo == ALIEN_VET) {
-            mvprintw(alien.posx, alien.posy,   "@T@");
-            mvprintw(alien.posx+1, alien.posy, "VET");
-            mvprintw(alien.posx+2, alien.posy, ">O<");
-        } else if (alien.tipo == ALIEN_CAL) {
-            mvprintw(alien.posx, alien.posy,   "^+^");
-            mvprintw(alien.posx+1, alien.posy, "CAL");
-            mvprintw(alien.posx+2, alien.posy, "\\^/");
+        } else {
+            printa_unidade(&alien);
         }
         incrementa_atual(aliens);
     } 
@@ -326,10 +324,33 @@ void cria_canhao (t_jogo *c) {
     atualiza_hitbox_unidade(c);
 }
 
-void printa_canhao_sprite (t_jogo *c) {
-    mvprintw(c->posx, c->posy,   "/I\\"); 
-    mvprintw(c->posx+1, c->posy, "Q@Q ");
-    mvprintw(c->posx+2, c->posy, "\\^/");
+void printa_unidade (t_jogo *unidade) {
+    int i;
+
+    char *sprite;
+
+    switch (unidade->tipo) {
+        case CANHAO:
+            sprite = SPRITE_CANHAO;
+            break;
+
+        case ALIEN_VET:
+            sprite = SPRITE_ALIEN_VET;
+            break;
+
+        case ALIEN_CAL:
+            sprite = SPRITE_ALIEN_CAL;
+            break;
+
+        case NAVE_MAE:
+            sprite = SPRITE_NAVE_MAE;
+            break;
+    }
+
+    for(i = 0; i < unidade->hitbox->tam; ++i) {
+        move(unidade->hitbox[i].posx, unidade->hitbox[i].posy);
+        addch(sprite[i]);
+    }
 }
 
 void move_canhao (t_jogo *c, int input) {
@@ -355,7 +376,7 @@ void printa_nave_mae (t_jogo *ramiel) {
 
     char *sprite;
 
-    sprite=SPRITE_NAVE_MAE;
+    sprite = SPRITE_NAVE_MAE;
     
     i = 0;
     if (ramiel->vida == 9) {
@@ -364,7 +385,7 @@ void printa_nave_mae (t_jogo *ramiel) {
         while (i < ramiel->hitbox->tam) {
             x = ramiel->hitbox[i].posx;
             y = ramiel->hitbox[i].posy;
-            
+
             if (x >= 0 && x <= 38 && y >= 0 && y <= 99) {
                 move(x, y);
                 addch(sprite[i]);
@@ -405,7 +426,7 @@ void printa_tela (t_lista *aliens, t_lista *armadura, t_lista *tiros, t_jogo *c,
     printa_alien(aliens);
     printa_tiro(tiros);
     printa_bombas(bombas);
-    printa_canhao_sprite(c);
+    printa_unidade(c);
     printa_armadura(armadura);
     if (ramiel->vida) {
         printa_nave_mae(ramiel);
