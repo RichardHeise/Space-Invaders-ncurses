@@ -10,7 +10,7 @@
     Define as posicoes iniciais e finais dos aliens 
 */
 #define INI_LIN_ALIEN 6
-#define FIM_LIN_ALIEN 26
+#define FIM_LIN_ALIEN 24
 #define INI_COL_ALIEN 8
 #define FIM_COL_ALIEN 86
 
@@ -254,7 +254,7 @@ void move_nave_mae (t_jogo *ramiel);
 /*
     Verifica se a nave mae esta na borda
     Deleta aos poucos a hitbox
-*/
+
 void verifica_borda_nave_mae (t_jogo *ramiel);
 
 /*
@@ -307,6 +307,11 @@ void printa_explosao(t_jogo *unidade);
 void cria_borda();
 
 /*
-    Escreve a mensagem final do jogo 
+    Escreve a mensagem de final de fase do jogo 
 */
 void mensagem_final(int ganhou, int sc);
+
+/*
+    Escreve a mensagem de fim de jogo
+*/
+void game_over (int sc, int per);

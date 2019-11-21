@@ -131,7 +131,7 @@ void printa_explosao (t_jogo *unidade) {
 }
 
 void printa_alien (t_lista *aliens) {
-    int i;
+    int i, x, y;
     t_jogo alien;
     inicializa_atual_inicio(aliens);
     for (i = 0; i < aliens->tamanho; ++i) {
@@ -139,25 +139,13 @@ void printa_alien (t_lista *aliens) {
         if (alien.vida == 9) {
             printa_explosao(&alien);
         } else if (alien.tipo == ALIEN_VET) {
-            mvprintw(alien.hitbox[0].posx, alien.hitbox[0].posy, "+");
-            mvprintw(alien.hitbox[1].posx, alien.hitbox[1].posy, "W");
-            mvprintw(alien.hitbox[2].posx, alien.hitbox[2].posy, "+");
-            mvprintw(alien.hitbox[3].posx, alien.hitbox[3].posy, "V");
-            mvprintw(alien.hitbox[4].posx, alien.hitbox[4].posy, "E");
-            mvprintw(alien.hitbox[5].posx, alien.hitbox[5].posy, "T");
-            mvprintw(alien.hitbox[6].posx, alien.hitbox[6].posy, "V");
-            mvprintw(alien.hitbox[7].posx, alien.hitbox[7].posy, "O");
-            mvprintw(alien.hitbox[8].posx, alien.hitbox[8].posy, "V");
+            mvprintw(alien.posx, alien.posy, "@T@");
+            mvprintw(alien.posx+1, alien.posy, "VET");
+            mvprintw(alien.posx+2, alien.posy, ">O<");
         } else if (alien.tipo == ALIEN_CAL) {
-            mvprintw(alien.hitbox[0].posx, alien.hitbox[0].posy, "|");
-            mvprintw(alien.hitbox[1].posx, alien.hitbox[1].posy, "@");
-            mvprintw(alien.hitbox[2].posx, alien.hitbox[2].posy, "|");
-            mvprintw(alien.hitbox[3].posx, alien.hitbox[3].posy, "C");
-            mvprintw(alien.hitbox[4].posx, alien.hitbox[4].posy, "A");
-            mvprintw(alien.hitbox[5].posx, alien.hitbox[5].posy, "L");
-            mvprintw(alien.hitbox[6].posx, alien.hitbox[6].posy, "^");
-            mvprintw(alien.hitbox[7].posx, alien.hitbox[7].posy, "O");
-            mvprintw(alien.hitbox[8].posx, alien.hitbox[8].posy, "^");
+            mvprintw(alien.posx, alien.posy, "^+^");
+            mvprintw(alien.posx+1, alien.posy, "CAL");
+            mvprintw(alien.posx+2, alien.posy, "\\^/");
         }
         incrementa_atual(aliens);
     } 
@@ -324,15 +312,9 @@ void cria_canhao (t_jogo *c) {
 }
 
 void printa_canhao_sprite (t_jogo *c) {
-    mvprintw(c->hitbox[0].posx, c->hitbox[0].posy, "/"); 
-    mvprintw(c->hitbox[1].posx, c->hitbox[1].posy, "A");
-    mvprintw(c->hitbox[2].posx, c->hitbox[2].posy, "\\"); 
-    mvprintw(c->hitbox[3].posx, c->hitbox[3].posy, "(");
-    mvprintw(c->hitbox[4].posx, c->hitbox[4].posy, "@");
-    mvprintw(c->hitbox[5].posx, c->hitbox[5].posy, ")");
-    mvprintw(c->hitbox[6].posx, c->hitbox[6].posy, "^");
-    mvprintw(c->hitbox[7].posx, c->hitbox[7].posy, "^");
-    mvprintw(c->hitbox[8].posx, c->hitbox[8].posy, "^");
+    mvprintw(c->posx, c->posy, "/I\\"); 
+    mvprintw(c->posx+1, c->posy, "Q@Q ");
+    mvprintw(c->posx+2, c->posy, "^v^"); 
 }
 
 void move_canhao (t_jogo *c, int input) {
@@ -354,24 +336,15 @@ void printa_tiro(t_lista *tiros) {
 }
 
 void printa_nave_mae (t_jogo *ramiel) {
+    int x, y, i;
+    
+    i = 0;
     if (ramiel->vida == 9) {
         printa_explosao(ramiel);
     } else {
-        mvprintw(ramiel->hitbox[0].posx, ramiel->hitbox[0].posy, "W");
-        mvprintw(ramiel->hitbox[1].posx, ramiel->hitbox[1].posy, "W");
-        mvprintw(ramiel->hitbox[2].posx, ramiel->hitbox[2].posy, "W");
-        mvprintw(ramiel->hitbox[3].posx, ramiel->hitbox[3].posy, "W");
-        mvprintw(ramiel->hitbox[4].posx, ramiel->hitbox[4].posy, "W");
-        mvprintw(ramiel->hitbox[5].posx, ramiel->hitbox[5].posy, "<");
-        mvprintw(ramiel->hitbox[6].posx, ramiel->hitbox[6].posy, "=");
-        mvprintw(ramiel->hitbox[7].posx, ramiel->hitbox[7].posy, "~");
-        mvprintw(ramiel->hitbox[8].posx, ramiel->hitbox[8].posy, "=");
-        mvprintw(ramiel->hitbox[9].posx, ramiel->hitbox[9].posy, ">");
-        mvprintw(ramiel->hitbox[10].posx, ramiel->hitbox[10].posy, "U");
-        mvprintw(ramiel->hitbox[11].posx, ramiel->hitbox[11].posy, "U");
-        mvprintw(ramiel->hitbox[12].posx, ramiel->hitbox[12].posy, "U");
-        mvprintw(ramiel->hitbox[13].posx, ramiel->hitbox[13].posy, "U");
-        mvprintw(ramiel->hitbox[14].posx, ramiel->hitbox[14].posy, "U");
+        mvprintw(ramiel->posx, ramiel->posy, "W^W^W");
+        mvprintw(ramiel->posx+1, ramiel->posy, "~=~=~");
+        mvprintw(ramiel->posx+2, ramiel->posy, "Uu.uU");
     }
 }
 
@@ -438,8 +411,8 @@ void checa_vidas (t_lista *aliens, t_lista *armadura, t_jogo *ramiel) {
 void atualiza_hitbox_nave_mae (t_jogo *ramiel) {
     int i, j, k;
     k = 0;
-    for (i = 0; i < 3; ++i) {
-        for (j = 0; j < 5; ++j) {
+    for (j = 0; j < 5; ++j) {
+        for (i = 0; i < 3; ++i) {
             ramiel->hitbox[k].posx = ramiel->posx + i;
             ramiel->hitbox[k].posy = ramiel->posy + j;
             k++;
@@ -457,23 +430,13 @@ void cria_nave_mae (t_jogo *ramiel) {
     atualiza_hitbox_nave_mae(ramiel);
 }
 
-void verifica_borda_nave_mae (t_jogo *ramiel) {
-    int i;
-    for (i = 0; i < ramiel->hitbox->tam; ++i) {
-        if (ramiel->hitbox[i].posy + 1 >= COLUNAS) {
-            ramiel->hitbox[i].posy = -10;
-            ramiel->hitbox[i].posx = -10;
-        }
-    }
-}
-
 void move_nave_mae (t_jogo *ramiel) {
     if (ramiel->posy < COLUNAS) {
         ramiel->posy += 1;
+    } else if (ramiel->posy + 1 >= COLUNAS) {
+        mata_nave_mae(ramiel);
     }
-    
-    verifica_borda_nave_mae(ramiel);
-    
+
     atualiza_hitbox_nave_mae(ramiel);
 }
 
@@ -590,7 +553,6 @@ int canhao_vivo (t_lista *aliens, t_lista *bombas, t_jogo *c) {
     return 1;
 }
 
-/* Mensagem do início do jogo */
 void mensagem_inicial () {
     char input;
     clear();
@@ -611,23 +573,33 @@ void mensagem_inicial () {
     refresh();
 }
 
-/* Mensagem do final do jogo */
 void mensagem_final (int ganhou, int sc) {
     char input;
     clear();
-    if (input != 'q') {
-        if (ganhou) {
+    if (ganhou) {
+        while (! input) {
             mvprintw(LINHAS /2, COLUNAS /2 - 20, "Parabéns! Você conseguiu fazer com que todos os veteranos e calouros desse período pegassem DP!\n");
-        } else {
-            mvprintw(LINHAS /2 - 1, COLUNAS /2 - 1, "Você falhou em reprovar todos os alunos deste período!\n"); 
-            mvprintw(LINHAS /2, COLUNAS /2, "Parece que a dedicação deles valeu a pena no fim :)");
+            refresh();
+            usleep(3000000); 
+            input = getchar();
         }
     }
-    mvprintw(3, COLUNAS /2 + 18, "SCORE FINAL: %d", sc);
-    refresh();
-    usleep(5555888);
 }
 
 void placar(int s) {
     mvprintw(0, 45, "Score: %d", s);
 }
+
+void game_over (int sc, int per) {
+    clear();
+    mvprintw(5, COLUNAS /2 - 20, "GAME OVER");
+    if (per == 5) {
+        mvprintw(LINHAS /2 - 2, COLUNAS /2, "Você sobreviveu ao máximo de períodos possíveis, ninguém mais aguenta pegar DP!: %d!", per);
+    } else {
+        mvprintw(LINHAS /2, COLUNAS /2, "Você sobreviveu a: %d períodos!", per);
+    }
+    mvprintw(LINHAS /2 - 1, COLUNAS /2, "E sua pontuação máxima foi de: %d", sc);
+    refresh();
+    usleep(3999999);
+}
+
