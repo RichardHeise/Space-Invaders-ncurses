@@ -37,12 +37,13 @@ int main () {
     
     /* Declaracao e inicializacao das variaveis auxiliares */
     int controlador;
+    int seletor;
     int constante_tempo;
     int entr;
     int buff;
     int score;
     int periodos;
-    constante_tempo = CONSTANTE_TEMPO;
+    seletor = 0;
     buff = 0;
     score = 0;
     nave_mae.vida = 0;
@@ -59,21 +60,19 @@ int main () {
     /* Criacao dos elementos estaticos */
     cria_armadura(&lista_barreira);
 
-    /* Inicialização da variavel controlador */
+    /* Inicialização das variaveis de controle */
+    constante_tempo = CONSTANTE_TEMPO;
     controlador = CONTROLADOR;
 
 
     while (canhao.vida && periodos < 4) {
 
-        esvazia_lista(&lista_bombas);
-        esvazia_lista(&lista_tiros);
-        cria_aliens(&lista_aliens);
-        cria_canhao(&canhao);
+        reseta_jogo(&lista_tiros, &lista_bombas,&lista_aliens, &canhao, &nave_mae);
         periodos++;
 
         while (canhao.vida && !lista_vazia(&lista_aliens)) {
         
-            printa_tela(&lista_aliens, &lista_barreira, &lista_tiros, &canhao, &lista_bombas, &nave_mae);
+            printa_tela(&lista_aliens, &lista_barreira, &lista_tiros, &canhao, &lista_bombas, &nave_mae, seletor);
     
             /* Escreve GREVE quando o buff esta ativo */
             if (buff) {
@@ -96,6 +95,7 @@ int main () {
                 checa_vidas(&lista_aliens, &lista_barreira, &nave_mae);
                 verifica_posicao_barreira(&lista_aliens, &lista_barreira);
                 move_alien(&lista_aliens);
+                seletor = seletor+1;
             }
     
             /* Controla a taxa de nascimento da nave mae */
@@ -104,7 +104,7 @@ int main () {
             }
             
             /* Controla a velocidade da nave mae */
-            if ((controlador % CONSTANTE_MOV == 0) && (nave_mae.vida == 1)) {
+            if ((controlador % CONSTANTE_MOV == 0) && (nave_mae.vida == VIVO)) {
                 move_nave_mae(&nave_mae);
             }
             

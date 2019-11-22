@@ -1,82 +1,5 @@
 #include "lib_lista.h"
-
-#define SPRITE_NAVE_MAE "W(U^=uW~_^=uW)U"
-#define SPRITE_CANHAO "/I\\Q@Q\\^/"
-#define SPRITE_ALIEN_VET "@T@VET>O<"
-#define SPRITE_ALIEN_CAL "^+^CAL\\^/"
-#define SPRITE_EXPLOSAO "\\|- -*|'"
-
-
-/*
-    Tamanho da tela
-*/
-#define LINHAS 38
-#define COLUNAS 100
-
-/* 
-    Define as posicoes iniciais e finais dos aliens 
-*/
-#define INI_LIN_ALIEN 6
-#define FIM_LIN_ALIEN 24
-#define INI_COL_ALIEN 8
-#define FIM_COL_ALIEN 86
-
-/*
-    Define as posicoes iniciais e finais da barreira
-*/
-#define INI_LIN_BAR 30
-#define FIM_LIN_BAR 33
-#define INI_COL_BAR 2
-#define FIM_COL_BAR 8
-/* 
-    TIPOS
-*/
-#define ALIEN_VET 1
-#define ALIEN_CAL 2
-#define NAVE_MAE 3
-#define BARREIRA 4
-#define CANHAO 5
-#define TIRO 6
-#define BOMBA 7
-
-#define MAX_TIROS 3 /* Quantidade de tiros permitidos na tela */
-
-/*  Esses valores sao responsaveis pela velocidade dos aliens
-    aumente-os para DIMINUIR a velocidade de descida
-*/
-#define CONSTANTE_TEMPO 120 
-#define CONTROLADOR 8000 
-
-/*
-    Esse valor eh responsavel pela taxa de nascimento da nave mae
-    aumente para DIMINUIR a taxa
-*/
-#define CONSTANTE_SPAWN 1657 /* eh ideal que o valor seja primo devido a propriedades especificas */
-
-/*
-    Esse valor eh resposavel pela velocidade da nave mae
-    aumente para DIMINUIR a velocidade
-*/
-#define CONSTANTE_MOV 51 /* eh ideal que o valor seja impar devido a propriedades especificas */
-
-/*
-    Esse valor eh responsavel pela velocidade das bombas
-    aumente para DIMINUIR a velocidade
-*/
-#define CONSTANTE_QUEDA_MOV 67 
-
-/*
-    Esse valor eh responsavel pela taxa de bombas
-    aumente para DIMINUIR a taxa
-*/
-#define CONSTANTE_QUEDA 315 /* eh ideal que o valor seja multiplo de 5 */
-
-/* 
-    Esse valor eh responsavel pela velocidade dos tiros
-    aumente para DIMINUR a velocidade
-*/
-#define VEL_TIROS 12 /* eh ideal que o valor seja par e multiplo de 12 */
-
+#include "complementar.h"
 
 /* Funcoes do aliens */
 
@@ -98,7 +21,7 @@ void cria_aliens (t_lista *aliens);
 /*
     Escreve na tela o corpo de cada alien
 */
-void printa_alien (t_lista *aliens);
+void printa_alien (t_lista *aliens, int spr);
 
 /*
     Decide para que lado os aliens vao se mover
@@ -235,11 +158,6 @@ void cria_canhao (t_jogo *c);
 */
 void move_canhao (t_jogo *c, int input);
 
-/*
-    Escreve o corpo do canhao na tela
-*/
-void printa_canhao_sprite (t_jogo *c);
-
 /* 
     Verifica se o canhao esta vivo
 */
@@ -278,7 +196,7 @@ void mata_nave_mae (t_jogo *ramiel);
 /*
     Escreve o corpo da nave mae na tela 
 */
-void printa_nave_mae (t_jogo *ramiel);
+void printa_nave_mae (t_jogo *ramiel, int spr);
 
 
 /* Funcoes complementares */
@@ -286,7 +204,7 @@ void printa_nave_mae (t_jogo *ramiel);
 /*
     Limpa e escreve os elementos na tela
 */
-void printa_tela (t_lista *aliens, t_lista *armadura, t_lista *tiros, t_jogo *c, t_lista *bombas, t_jogo *ramiel);
+void printa_tela (t_lista *aliens, t_lista *armadura, t_lista *tiros, t_jogo *c, t_lista *bombas, t_jogo *ramiel, int spr);
 
 /*
     Escreve a mensagem inicial
@@ -323,4 +241,12 @@ void mensagem_final(int ganhou, int sc);
 */
 void game_over (int sc, int per);
 
-void printa_unidade (t_jogo *unidade);
+/*
+    Escreve uma entidade na tela
+*/
+void printa_unidade (t_jogo *unidade, int spr);
+
+/*
+    Reseta o jogo
+*/
+void reseta_jogo (t_lista *tiros, t_lista *bombas, t_lista *aliens, t_jogo *c, t_jogo *ramiel);

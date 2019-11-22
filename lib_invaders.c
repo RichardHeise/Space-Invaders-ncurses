@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <ncurses.h>
 #include "lib_invaders.h"
+#include "complementar.h"
 
 void atualiza_hitbox_unidade (t_jogo *uni) {
     int l, c, k;
@@ -18,7 +19,7 @@ void atualiza_hitbox_unidade (t_jogo *uni) {
 
 void atira (t_lista *tiros, t_jogo *c) {
     t_jogo tiro;
-    tiro.vida = 1;
+    tiro.vida = VIVO;
     tiro.posx = c->posx-1;
     tiro.posy = c->posy+1;
     tiro.tipo = TIRO;
@@ -36,7 +37,7 @@ void atualiza_tiros (t_lista *tiros) {
 }
 
 void cria_alien (t_jogo *alien, int i, int j) {
-    alien->vida = 1;
+    alien->vida = VIVO;
     alien->posx = i;
     alien->posy = j;
 
@@ -49,12 +50,19 @@ void cria_aliens (t_lista *aliens) {
     int i, j;
     t_jogo alien;
     for (j = INI_COL_ALIEN; j < FIM_COL_ALIEN; j += 8) {
+
         for (i = INI_LIN_ALIEN; i < FIM_LIN_ALIEN; i += 4) {
             alien.ID = aliens->tamanho;
+
             if (i == INI_LIN_ALIEN) {
                 alien.tipo = ALIEN_VET;
-            } else {
+
+            } else if (i == INI_LIN_ALIEN + 4 || i == INI_LIN_ALIEN + 8) {
                 alien.tipo = ALIEN_CAL;
+
+            } else {
+                alien.tipo = ALIEN_PERDIDO;
+                
             }
             cria_alien(&alien, i, j);
             insere_fim_lista(alien, aliens);
@@ -64,7 +72,7 @@ void cria_aliens (t_lista *aliens) {
 }
 
 void cria_barreira (t_jogo *barreira, int i, int j) {
-    barreira->vida = 1;
+    barreira->vida = VIVO;
     barreira->posx = i;
     barreira->posy = j;
     barreira->tipo = BARREIRA;
@@ -119,12 +127,12 @@ void cria_armadura (t_lista *armadura) {
 }
 
 void printa_explosao (t_jogo *unidade) {
-    mvprintw(unidade->posx, unidade->posy,   "\\|*");
-    mvprintw(unidade->posx+1, unidade->posy, "- -");
-    mvprintw(unidade->posx+2, unidade->posy, "*|'");
+    mvprintw(unidade->posx, unidade->posy,   "\\|/");
+    mvprintw(unidade->posx+1, unidade->posy, "-x-");
+    mvprintw(unidade->posx+2, unidade->posy, "/|*");
 }
 
-void printa_alien (t_lista *aliens) {
+void printa_alien (t_lista *aliens, int spr) {
     int i, x, y;
     /** Facilita a leitura */
 
@@ -134,10 +142,10 @@ void printa_alien (t_lista *aliens) {
     for (i = 0; i < aliens->tamanho; ++i) {
 
         alien = aliens->atual->chave;
-        if (alien.vida == 9) {
+        if (alien.vida == MORRENDO) {
             printa_explosao(&alien);
         } else {
-            printa_unidade(&alien);
+            printa_unidade(&alien, spr);
         }
         incrementa_atual(aliens);
     } 
@@ -236,7 +244,7 @@ void move_alien (t_lista *aliens) {
 }
 
 void cria_bomba (t_jogo *bomba, t_jogo *alien) {
-    bomba->vida = 1;
+    bomba->vida = VIVO;
     bomba->posx = alien->posx + 3;
     bomba->posy = alien->posy + 1;
     bomba->tipo = BOMBA;
@@ -292,7 +300,7 @@ void verifica_colisao_bombas (t_lista *bombas, t_lista *armadura, t_jogo *c) {
 
             if (bomba.posx == elemento.posx && bomba.posy == elemento.posy) {
                 remove_item_atual(&lixo, bombas);
-                armadura->atual->chave.vida = 9;
+                armadura->atual->chave.vida = MORRENDO;
 
             }
             incrementa_atual(armadura);
@@ -314,7 +322,7 @@ void verifica_colisao_borda_bombas (t_lista *bombas) {
 }
 
 void cria_canhao (t_jogo *c) {
-    c->vida = 1;
+    c->vida = VIVO;
     c->posx = 35;
     c->posy = 50;
     c->tipo = CANHAO;
@@ -324,27 +332,55 @@ void cria_canhao (t_jogo *c) {
     atualiza_hitbox_unidade(c);
 }
 
-void printa_unidade (t_jogo *unidade) {
+void printa_unidade (t_jogo *unidade, int spr) {
     int i;
 
     char *sprite;
 
-    switch (unidade->tipo) {
-        case CANHAO:
-            sprite = SPRITE_CANHAO;
-            break;
+    if (spr % 2) {
+        switch (unidade->tipo) {
+            case CANHAO:
+                sprite = SPRITE_CANHAO;
+                break;
 
-        case ALIEN_VET:
-            sprite = SPRITE_ALIEN_VET;
-            break;
+            case ALIEN_VET:
+                sprite = SPRITE_ALIEN_VET1;
+                break;
 
-        case ALIEN_CAL:
-            sprite = SPRITE_ALIEN_CAL;
-            break;
+            case ALIEN_CAL:
+                sprite = SPRITE_ALIEN_CAL1;
+                break;
 
-        case NAVE_MAE:
-            sprite = SPRITE_NAVE_MAE;
-            break;
+            case ALIEN_PERDIDO:
+                sprite = SPRITE_ALIEN_PERDIDO1;
+                break;
+
+            case NAVE_MAE:
+                sprite = SPRITE_NAVE_MAE1;
+                break;
+        }
+    } else {
+        switch (unidade->tipo) {
+            case CANHAO:
+                sprite = SPRITE_CANHAO;
+                break;
+
+            case ALIEN_VET:
+                sprite = SPRITE_ALIEN_VET2;
+                break;
+
+            case ALIEN_CAL:
+                sprite = SPRITE_ALIEN_CAL2;
+                break;
+
+            case ALIEN_PERDIDO:
+                sprite = SPRITE_ALIEN_PERDIDO2;
+                break;
+
+            case NAVE_MAE:
+                sprite = SPRITE_NAVE_MAE2;
+                break;
+        }
     }
 
     for(i = 0; i < unidade->hitbox->tam; ++i) {
@@ -371,15 +407,15 @@ void printa_tiro(t_lista *tiros) {
     }   
 }
 
-void printa_nave_mae (t_jogo *ramiel) {
+void printa_nave_mae (t_jogo *ramiel,int spr) {
     int x, y, i;
 
     char *sprite;
 
-    sprite = SPRITE_NAVE_MAE;
+    sprite = SPRITE_NAVE_MAE1;
     
     i = 0;
-    if (ramiel->vida == 9) {
+    if (ramiel->vida == MORRENDO) {
         printa_explosao(ramiel);
     } else {
         while (i < ramiel->hitbox->tam) {
@@ -387,8 +423,7 @@ void printa_nave_mae (t_jogo *ramiel) {
             y = ramiel->hitbox[i].posy;
 
             if (x >= 0 && x <= 38 && y >= 0 && y <= 99) {
-                move(x, y);
-                addch(sprite[i]);
+                printa_unidade(ramiel, spr);
             }
             i += 1;
         }
@@ -399,7 +434,7 @@ void printa_armadura (t_lista *armadura) {
     int i;
     inicializa_atual_inicio(armadura);
     for (i = 0; i < armadura->tamanho; ++i) {
-        if (armadura->atual->chave.vida == 9) {
+        if (armadura->atual->chave.vida == MORRENDO) {
             mvprintw(armadura->atual->chave.posx, armadura->atual->chave.posy, "+");
         } else {
             mvprintw(armadura->atual->chave.posx, armadura->atual->chave.posy, "=");
@@ -420,16 +455,16 @@ void cria_borda () {
     }
 }
 
-void printa_tela (t_lista *aliens, t_lista *armadura, t_lista *tiros, t_jogo *c, t_lista *bombas, t_jogo *ramiel) {
+void printa_tela (t_lista *aliens, t_lista *armadura, t_lista *tiros, t_jogo *c, t_lista *bombas, t_jogo *ramiel, int spr) {
     erase();
     cria_borda();
-    printa_alien(aliens);
+    printa_alien(aliens, spr);
     printa_tiro(tiros);
     printa_bombas(bombas);
-    printa_unidade(c);
+    printa_unidade(c, spr);
     printa_armadura(armadura);
     if (ramiel->vida) {
-        printa_nave_mae(ramiel);
+        printa_nave_mae(ramiel, spr);
     }
 }
 
@@ -438,7 +473,7 @@ void checa_vidas (t_lista *aliens, t_lista *armadura, t_jogo *ramiel) {
     t_jogo lixo;
     inicializa_atual_inicio(aliens);
     for (i = 0; i < aliens->tamanho; ++i) {
-        if (aliens->atual->chave.vida == 9) {
+        if (aliens->atual->chave.vida == MORRENDO) {
             remove_item_atual(&lixo, aliens);
         } 
         incrementa_atual(aliens);
@@ -446,13 +481,13 @@ void checa_vidas (t_lista *aliens, t_lista *armadura, t_jogo *ramiel) {
 
     inicializa_atual_inicio(armadura);
     for (i = 0; i < armadura->tamanho; ++i) {
-        if (armadura->atual->chave.vida == 9) {
+        if (armadura->atual->chave.vida == MORRENDO) {
             remove_item_atual(&lixo, armadura);
         }
         incrementa_atual(armadura);
     }
 
-    if (ramiel->vida == 9) {
+    if (ramiel->vida == MORRENDO) {
         mata_nave_mae(ramiel);
     }
 }
@@ -470,7 +505,7 @@ void atualiza_hitbox_nave_mae (t_jogo *ramiel) {
 }
 
 void cria_nave_mae (t_jogo *ramiel) {
-    ramiel->vida = 1;
+    ramiel->vida = VIVO;
     ramiel->posx = 1;
     ramiel->posy = 1;
     ramiel->tipo = NAVE_MAE;
@@ -516,7 +551,7 @@ void verifica_colisao_nave_mae (t_lista *tiros, t_jogo *ramiel, int *bf, int *s)
             if (pos_mae_x == tiro.posx && pos_mae_y == tiro.posy && ramiel->vida == 1) {
 
                 remove_item_atual(&lixo, tiros);
-                ramiel->vida = 9;
+                ramiel->vida = MORRENDO;
                 *bf = 750;
                 *s += 50;
                 break;
@@ -547,7 +582,7 @@ void verifica_colisao_alien (t_lista *tiros, t_lista *aliens, int *s) {
                 if (tiro.posx == alien.hitbox[k].posx && tiro.posy == alien.hitbox[k].posy && alien.vida == 1) {
 
                     remove_item_atual(&lixo, tiros);
-                    aliens->atual->chave.vida = 9;
+                    aliens->atual->chave.vida = MORRENDO;
                     *s += 10;
                     break;
                 }
@@ -577,7 +612,7 @@ void verifica_colisao_barreira (t_lista *tiros, t_lista *armadura) {
             if (tiro.posx == barreira.posx && tiro.posy == barreira.posy && barreira.vida == 1) {
 
                 remove_item_atual(&lixo, tiros);
-                armadura->atual->chave.vida = 9;
+                armadura->atual->chave.vida = MORRENDO;
                 break;
             }
             incrementa_atual(armadura);
@@ -678,5 +713,13 @@ void game_over (int sc, int per) {
     mvprintw(LINHAS /2 - 1, COLUNAS /2, "E sua pontuação máxima foi de: %d", sc);
     refresh();
     usleep(3999999);
+}
+
+void reseta_jogo (t_lista *tiros, t_lista *bombas, t_lista *aliens, t_jogo *c, t_jogo *ramiel) {
+    esvazia_lista(bombas);
+    esvazia_lista(tiros);
+    cria_aliens(aliens);
+    cria_canhao(c);
+    mata_nave_mae(ramiel);
 }
 
