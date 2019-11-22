@@ -6,12 +6,30 @@
 
 
 int main () {
-    initscr();              /* inicia a tela */
-    cbreak();               /* desabilita o buffer de entrada */
-    noecho();               /* não mostra os caracteres digitados */
-    nodelay(stdscr, TRUE);  /* faz com que getch não aguarde a digitação */
-    keypad(stdscr, TRUE);   /* permite a leitura das setas */
-    curs_set(FALSE);        /* Esconde o cursor */
+    initscr();                  /* inicia a tela */
+    cbreak();                   /* desabilita o buffer de entrada */
+    noecho();                   /* não mostra os caracteres digitados */
+    nodelay(stdscr, TRUE);      /* faz com que getch não aguarde a digitação */
+    keypad(stdscr, TRUE);       /* permite a leitura das setas */
+    curs_set(FALSE);            /* Esconde o cursor */
+    start_color();              /* Coloca cores no jogo */
+    wattron(stdscr, A_BOLD);    /* Faz as cores serem mais fortes */    
+
+    /* Definição das cores */
+    init_color(COLOR_BLACK, 0, 0, 0);
+    init_color(COLOR_RED, 1000, 0, 0);
+    init_color(COLOR_GREEN, 0, 1000, 0);
+    init_color(COLOR_CYAN, 0, 870, 500);
+    init_color(COLOR_BLUE, 0, 0, 400);
+    init_color(COLOR_MAGENTA, 520, 60, 600);
+
+    init_pair(1, COLOR_BLUE,    COLOR_BLACK);
+    init_pair(2, COLOR_GREEN,  COLOR_BLACK);
+    init_pair(3, COLOR_CYAN, COLOR_BLACK);
+    init_pair(4, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(5, COLOR_WHITE,   COLOR_BLACK);
+    init_pair(6, COLOR_RED, COLOR_BLACK);
+
 
     /* Verifica o tamanho do terminal */
     int linhas, colunas;

@@ -410,10 +410,6 @@ void printa_tiro(t_lista *tiros) {
 void printa_nave_mae (t_jogo *ramiel,int spr) {
     int x, y, i;
 
-    char *sprite;
-
-    sprite = SPRITE_NAVE_MAE1;
-    
     i = 0;
     if (ramiel->vida == MORRENDO) {
         printa_explosao(ramiel);
@@ -458,12 +454,25 @@ void cria_borda () {
 void printa_tela (t_lista *aliens, t_lista *armadura, t_lista *tiros, t_jogo *c, t_lista *bombas, t_jogo *ramiel, int spr) {
     erase();
     cria_borda();
+
+    attron(COLOR_PAIR(GREEN));
     printa_alien(aliens, spr);
+
+    attron(COLOR_PAIR(WHITE));
     printa_tiro(tiros);
+
+    attron(COLOR_PAIR(MAGENTA));
     printa_bombas(bombas);
+
+    attron(COLOR_PAIR(WHITE));
     printa_unidade(c, spr);
+
+    attron(COLOR_PAIR(BLUE));
     printa_armadura(armadura);
+
     if (ramiel->vida) {
+
+        attron(COLOR_PAIR(RED));
         printa_nave_mae(ramiel, spr);
     }
 }

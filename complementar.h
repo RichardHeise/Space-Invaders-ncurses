@@ -3,16 +3,16 @@
 /* APARENCIA DA NAVE MAE 1
     W^W^W
     (~=~)
-    Uu_uU
+    uU_Uu
 */
-#define SPRITE_NAVE_MAE1 "W(U^=uW~_^=uW)U"
+#define SPRITE_NAVE_MAE1 "W(u^=UW~_^=UW)u"
 
 /* APARENCIA DA NAVE MAE 2
     ^W^W^
     (=~=)
-    Uu_uU
+    UuHuU
 */
-#define SPRITE_NAVE_MAE2 "^(UW=u^~_W=u^)U"
+#define SPRITE_NAVE_MAE2 "^(UW~u^=HW~u^)U"
 
 /*
     APARENCIA DO CANHAO
@@ -147,3 +147,13 @@
     aumente para DIMINUR a velocidade
 */
 #define VEL_TIROS 12 /* eh ideal que o valor seja par e multiplo de 12 */
+
+/* 
+    Cores
+*/
+#define BLUE 1
+#define GREEN 2
+#define CYAN 3
+#define MAGENTA 4
+#define WHITE 5
+#define RED 6
