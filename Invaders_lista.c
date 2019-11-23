@@ -105,7 +105,7 @@ int main () {
              * Evita bugs 
              */
             if (lista_aliens.ini->chave.vel >= constante_tempo - lista_aliens.ini->chave.vel) {
-                lista_aliens.ini->chave.vel =  constante_tempo - lista_aliens.ini->chave.vel;
+                lista_aliens.ini->chave.vel = constante_tempo - lista_aliens.ini->chave.vel;
             }
     
             /* Controla a velocidade de descida dos aliens */

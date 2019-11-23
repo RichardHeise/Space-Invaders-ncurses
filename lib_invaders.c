@@ -354,10 +354,6 @@ void printa_unidade (t_jogo *unidade, int spr) {
             case ALIEN_PERDIDO:
                 sprite = SPRITE_ALIEN_PERDIDO1;
                 break;
-
-            case NAVE_MAE:
-                sprite = SPRITE_NAVE_MAE1;
-                break;
         }
     } else {
         switch (unidade->tipo) {
@@ -375,10 +371,6 @@ void printa_unidade (t_jogo *unidade, int spr) {
 
             case ALIEN_PERDIDO:
                 sprite = SPRITE_ALIEN_PERDIDO2;
-                break;
-
-            case NAVE_MAE:
-                sprite = SPRITE_NAVE_MAE2;
                 break;
         }
     }
@@ -410,6 +402,14 @@ void printa_tiro(t_lista *tiros) {
 void printa_nave_mae (t_jogo *ramiel,int spr) {
     int x, y, i;
 
+    char *sprite;
+
+    if (spr % 2) {
+        sprite = SPRITE_NAVE_MAE1; 
+    } else {
+        sprite = SPRITE_NAVE_MAE2;  
+    }
+
     i = 0;
     if (ramiel->vida == MORRENDO) {
         printa_explosao(ramiel);
@@ -419,7 +419,8 @@ void printa_nave_mae (t_jogo *ramiel,int spr) {
             y = ramiel->hitbox[i].posy;
 
             if (x >= 0 && x <= 38 && y >= 0 && y <= 99) {
-                printa_unidade(ramiel, spr);
+                move(x, y);
+                addch(sprite[i]);
             }
             i += 1;
         }
@@ -708,7 +709,7 @@ void mensagem_final (int ganhou, int sc) {
 }
 
 void placar(int s) {
-    mvprintw(0, 45, "Score: %d", s);
+    mvprintw(0, 45, " Score: %d ", s);
 }
 
 void game_over (int sc, int per) {
