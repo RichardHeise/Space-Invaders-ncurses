@@ -250,3 +250,8 @@ void printa_unidade (t_jogo *unidade, int spr);
     Reseta o jogo
 */
 void reseta_jogo (t_lista *tiros, t_lista *bombas, t_lista *aliens, t_jogo *c, t_jogo *ramiel);
+
+/*
+    Escreve GREVE na tela se o buff esta ativo
+*/
+void greve (int bf);

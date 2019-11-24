@@ -67,6 +67,7 @@ int main () {
     nave_mae.vida = 0;
     periodos = 0;
 
+    /* mensagem inicial do jogo */
     mensagem_inicial();
 
     /* Inicializacao das listas */
@@ -86,16 +87,13 @@ int main () {
     while (canhao.vida && periodos < 4) {
 
         reseta_jogo(&lista_tiros, &lista_bombas,&lista_aliens, &canhao, &nave_mae);
-        periodos++;
 
         while (canhao.vida && !lista_vazia(&lista_aliens)) {
         
             printa_tela(&lista_aliens, &lista_barreira, &lista_tiros, &canhao, &lista_bombas, &nave_mae, seletor);
     
             /* Escreve GREVE quando o buff esta ativo */
-            if (buff) {
-                mvprintw(1, COLUNAS / 2, "GREVE");
-            }
+            greve(buff);
     
             /* Escreve o placar na tela */
             placar(score);
@@ -164,12 +162,13 @@ int main () {
     
             /* Não altera o controlador se o buff esta ativo */
             if (! buff) { 
-                controlador -= 1;
+                controlador += 1;
             } else {
                 buff -= 1;
             }
         }
         constante_tempo -= 10;
+        periodos++;
         mensagem_final(canhao.vida, score);
     }
     

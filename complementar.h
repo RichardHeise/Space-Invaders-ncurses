@@ -116,7 +116,7 @@
     aumente-os para DIMINUIR a velocidade de descida
 */
 #define CONSTANTE_TEMPO 120 
-#define CONTROLADOR 8000 
+#define CONTROLADOR 2000 
 
 /*
     Esse valor eh responsavel pela taxa de nascimento da nave mae

@@ -40,6 +40,7 @@ void cria_alien (t_jogo *alien, int i, int j) {
     alien->vida = VIVO;
     alien->posx = i;
     alien->posy = j;
+    alien->vel = 0;
 
     alien->hitbox->tam = 9;
  
@@ -733,3 +734,8 @@ void reseta_jogo (t_lista *tiros, t_lista *bombas, t_lista *aliens, t_jogo *c, t
     mata_nave_mae(ramiel);
 }
 
+void greve (int bf) {
+    if (bf) {
+        mvprintw(1, COLUNAS / 2, "GREVE");
+    }
+}
