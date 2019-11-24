@@ -84,7 +84,7 @@ int main () {
     controlador = CONTROLADOR;
 
 
-    while (canhao.vida && periodos < 4) {
+    while (canhao.vida && periodos < 5) {
 
         reseta_jogo(&lista_tiros, &lista_bombas,&lista_aliens, &canhao, &nave_mae);
 
@@ -168,11 +168,11 @@ int main () {
             }
         }
         constante_tempo -= 10;
-        periodos++;
         mensagem_final(canhao.vida, score);
+        periodos++;
     }
     
-    game_over(score, periodos);
+    game_over(score, periodos-1);
 
     endwin();
     return 0;
