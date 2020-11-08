@@ -1,33 +1,39 @@
 
-Space Invaders game using ncurses lib
+# Space Invaders game using ncurses lib
 
-Instruções de compilação:
+## Instruções de compilação:
 
-ATENÇÃO:
+## ATENÇÃO:
 
-GARANTA QUE VOCÊ POSSUI A BIBLIOTECA NCURSES INSTALADA! Você pode adquirí-la através do comando:
+## GARANTA QUE VOCÊ POSSUI A BIBLIOTECA NCURSES INSTALADA! Você pode adquirí-la através do comando:
 
-Distribuição Debian/Ubunto {
+### Distribuição Debian/Ubunto {
 
-$ sudo apt-get install libncurses5-dev libncursesw5-dev
-
-}
-
-Distribuição CentOS/RHEL/Scientific Linux 6.x/7.x e Fedora Linux 21 ou mais antigo {
-
-$ sudo yum install ncurses-devel
+`$ sudo apt-get install libncurses5-dev libncursesw5-dev`
 
 }
 
-Distribuição Fedora 22.x+ {
+### Distribuição CentOS/RHEL/Scientific Linux 6.x/7.x e Fedora Linux 21 ou mais antigo {
 
-$ sudo dnf install ncurses-devel
+`$ sudo yum install ncurses-devel`
 
 }
 
-1). Coloque todos os arquivos em uma só pasta 2). Vá para a pasta supracitada. 3). Digite no terminal:
+### Distribuição Fedora 22.x+ {
 
-$ gcc Invaders.c lib_Invaders.c  lib_lista.c -o main -lncurses -lm
+`$ sudo dnf install ncurses-devel`
+
+}
+
+1). Coloque todos os arquivos em uma só pasta
+
+
+2). Vá para a pasta supracitada. 
+
+
+3). Digite no terminal:
+
+`$ make`
 
 4). Digite no terminal:
 
