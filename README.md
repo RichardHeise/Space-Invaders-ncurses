@@ -25,20 +25,22 @@
 
 }
 
-1). Coloque todos os arquivos em uma só pasta
+### 1). Coloque todos os arquivos em uma só pasta
 
 
-2). Vá para a pasta supracitada. 
+### 2). Vá para a pasta supracitada. 
 
 
-3). Digite no terminal:
+### 3). Digite no terminal:
 
 `$ make`
 
-4). Digite no terminal:
 
-$ ./main
 
-5). Divirta-se!
+### 4). Digite no terminal:
+
+`$ ./main`
+
+## 5). Divirta-se!
 
 Feito com muito suor por Richard Heise rfhf19@inf.ufpr.br
